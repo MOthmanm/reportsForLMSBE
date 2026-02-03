@@ -53,7 +53,7 @@ namespace StartBack.Infrastracture.Repositories
 
                 if (entity is IAuditableEntity auditableEntity)
                 {
-                    auditableEntity.CreatedAt = DateTime.Now;
+                    auditableEntity.CreatedAt = DateTime.UtcNow;
                     auditableEntity.CreatedBy = GetCurrentUserId(); // Set CreatedBy to current user
                 }
                 await _dbSet.AddAsync(entity);
@@ -78,7 +78,7 @@ namespace StartBack.Infrastracture.Repositories
 
                 if (entity is IAuditableEntity auditableEntity)
                 {
-                    auditableEntity.UpdatedAt = DateTime.Now;
+                    auditableEntity.UpdatedAt = DateTime.UtcNow;
                     auditableEntity.UpdatedBy = GetCurrentUserId(); // Set UpdatedBy to current user
                 }
 
@@ -105,7 +105,7 @@ namespace StartBack.Infrastracture.Repositories
                 if (entity is ISoftDeletable softDeletable)
                 {
                     softDeletable.IsDeleted = true;
-                    softDeletable.DeletedAt = DateTime.Now;
+                    softDeletable.DeletedAt = DateTime.UtcNow;
                     softDeletable.DeletedBy = GetCurrentUserId(); // Set DeletedBy to current user
                     _dbSet.Update(entity);
                     await _context.SaveChangesAsync();

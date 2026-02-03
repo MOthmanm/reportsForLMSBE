@@ -29,6 +29,10 @@ namespace StartBack.Application.Mappings
             CreateMap<ReportColumnCreateDto, ReportColumn>();
             CreateMap<ReportColumnCreateDto, ReportColumnDto>().ReverseMap();
 
+            CreateMap<ReportParameterCreateDto, ReportParameter>();
+            CreateMap<ReportParameterCreateDto, ReportParameterDto>();
+            CreateMap<ReportParameterDto, ReportParameter>();
+
 
 
 

@@ -1,5 +1,6 @@
 using StartBack.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Entities.Models.Tables;
 
 namespace StartBack.Infrastructure.Persistence;
 
@@ -16,25 +17,13 @@ public class AemzDbContext : DbContext
     public DbSet<Report> Reports => Set<Report>();
     public DbSet<ReportColumn> ReportColumns => Set<ReportColumn>();
     public DbSet<ReportParameter> ReportParameters => Set<ReportParameter>();
-
-
+    public DbSet<Assignment> Assignments => Set<Assignment>();
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-
-        // Convert all table and column names to uppercase (unquoted)
-        foreach (var entity in modelBuilder.Model.GetEntityTypes())
-        {
-            // Set table name to uppercase
-            entity.SetTableName(entity.GetTableName().ToUpper());
-
-            // Convert all column names to uppercase
-            foreach (var property in entity.GetProperties())
-            {
-                property.SetColumnName(property.GetColumnName().ToUpper());
-            }
-        }
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AemzDbContext).Assembly);
+        
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<User>(e =>

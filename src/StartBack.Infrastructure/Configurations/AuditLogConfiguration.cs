@@ -1,0 +1,32 @@
+﻿using Entities.Models.BaseConfiguration;
+using Entities.Models.Tables;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore;
+using Entities.Models.BaseConfiguration;
+
+#nullable disable
+
+namespace Entities.Models.Databases.PostgresDb.Configurations;
+
+public  class AuditLogConfiguration : BaseConfiguration<AuditLog>
+{
+    public override void Configure(EntityTypeBuilder<AuditLog> entity)
+    {
+        base.Configure(entity); 
+
+
+        entity.Property(e => e.Changes).HasMaxLength(500);
+
+        entity.Property(e => e.EmpSerial).HasMaxLength(120);
+
+        entity.Property(e => e.ModuleNo).HasPrecision(5);
+
+        entity.Property(e => e.TableId).HasMaxLength(200);
+
+        entity.Property(e => e.TableName).HasMaxLength(200);
+
+    }
+
+}
+
+

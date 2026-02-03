@@ -21,7 +21,7 @@ public static class PersistenceExtensions
 
         // Register DbContext
         services.AddDbContext<AemzDbContext>(options =>
-            options.UseOracle(conn).EnableSensitiveDataLogging());
+            options.UseNpgsql(conn).EnableSensitiveDataLogging());
 
         services.AddScoped<DbContext, AemzDbContext>();
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
@@ -30,8 +30,8 @@ public static class PersistenceExtensions
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
 
-        // CORRECTED: Only register OracleSqlExecutor once with the connection string
-        services.AddScoped<OracleSqlExecutor>(provider => new OracleSqlExecutor(conn));
+        // Register PostgreSqlExecutor with the connection string
+        services.AddScoped<PostgreSqlExecutor>(provider => new PostgreSqlExecutor(conn));
 
         return services;
     }

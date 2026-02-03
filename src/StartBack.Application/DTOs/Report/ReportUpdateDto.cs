@@ -13,5 +13,6 @@
         public bool Hide { get; set; }
         public int? DetailId { get; set; }
         public string? DetailColumn { get; set; }
+        public List<StartBack.Application.DTOs.ReportParameter.ReportParameterDto>? Parameters { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace StartBack.Application.DTOs.Report
 {
     public class ExecuteReportRequest
     {
-        public Dictionary<string, object> Parameters { get; set; }
-        public Dictionary<string, object> FilterParameters { get; set; }
+        public Dictionary<string, object>? Parameters { get; set; }
+        public StartBack.Domain.Helpers.FindOptions? FindOptions { get; set; }
     }
 }

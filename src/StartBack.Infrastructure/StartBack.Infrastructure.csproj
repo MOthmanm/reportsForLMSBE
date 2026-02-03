@@ -1,6 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <Compile Remove="Enums\ActionStatus.cs" />
+    <Compile Remove="Enums\AttendanceType.cs" />
+    <Compile Remove="Enums\ErrorCatalog.cs" />
+    <Compile Remove="Enums\Gender.cs" />
+    <Compile Remove="Enums\GradeRelation.cs" />
+    <Compile Remove="Enums\GradingType.cs" />
+    <Compile Remove="Enums\HolidayType.cs" />
+    <Compile Remove="Enums\IncidentRole.cs" />
+    <Compile Remove="Enums\IncidentStatus.cs" />
+    <Compile Remove="Enums\PersonType.cs" />
+    <Compile Remove="Enums\RoomType.cs" />
+    <Compile Remove="Enums\UniversityType.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\StartBack.Application\StartBack.Application.csproj" />
     <ProjectReference Include="..\StartBack.Domain\StartBack.Domain.csproj" />
   </ItemGroup>
@@ -16,6 +31,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Enums\ActionStatus.cs" />
+    <None Include="Enums\AttendanceType.cs" />
+    <None Include="Enums\ErrorCatalog.cs" />
+    <None Include="Enums\Gender.cs" />
+    <None Include="Enums\GradeRelation.cs" />
+    <None Include="Enums\GradingType.cs" />
+    <None Include="Enums\HolidayType.cs" />
+    <None Include="Enums\IncidentRole.cs" />
+    <None Include="Enums\IncidentStatus.cs" />
+    <None Include="Enums\PersonType.cs" />
+    <None Include="Enums\RoomType.cs" />
+    <None Include="Enums\UniversityType.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -26,8 +56,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Oracle.EntityFrameworkCore" Version="8.21.121" />
-    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.9.1" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.2" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Oracle.ManagedDataAccess.Client;
+using Npgsql;
 using StartBack.Application.Services;
 using StartBack.Application.DTOs.Report;
 using StartBack.Application.DTOs.ReportColumn;
@@ -9,6 +9,7 @@ using StartBack.Domain.Helpers;
 using StartBack.Infrastructure.Helpers;
 using Microsoft.Extensions.Options;
 using StartBack.Application.Abstractions;
+using StartBack.Application.DTOs.ReportParameter;
 
 namespace StartBack.Api.Controllers
 {
@@ -19,15 +20,15 @@ namespace StartBack.Api.Controllers
     public class ReportsController : ControllerBase
     {
         private readonly ReportService _reportService;
-        private readonly OracleSqlExecutor _oracleExecutor;
+        private readonly PostgreSqlExecutor _postgreExecutor;
         private readonly IPermissionService _permissionService;
         private readonly IUserService _userService;
 
 
-        public ReportsController(ReportService reportService, OracleSqlExecutor oracleExecutor, IPermissionService permissionService, IUserService userService)
+        public ReportsController(ReportService reportService, PostgreSqlExecutor postgreExecutor, IPermissionService permissionService, IUserService userService)
         {
             _reportService = reportService;
-            _oracleExecutor = oracleExecutor;
+            _postgreExecutor = postgreExecutor;
             _permissionService = permissionService;
             _userService = userService;
         }
@@ -53,7 +54,6 @@ namespace StartBack.Api.Controllers
         public async Task<ActionResult<ReportDto>> Create([FromBody] ReportCreateDto dto)
         {
             var created = await _reportService.CreateAsync(dto);
-            //return CreatedAtAction(nameof(Get), new { id = created.Id }, created);
             return Ok(created);
         }
 
@@ -71,14 +71,9 @@ namespace StartBack.Api.Controllers
             return NoContent();
         }
 
-
-
-
-
         [HttpGet("dashboard-reports")]
         public async Task<ActionResult<List<string>>> GetDashboardReports()
         {
-
             var dashboardReportsNames = await _reportService.GetDashboardNames();
             return Ok(dashboardReportsNames);
         }
@@ -88,7 +83,6 @@ namespace StartBack.Api.Controllers
         public async Task<ActionResult<PaginatedResult<ReportDto>>> GetReportsFromPermissions([FromQuery] int page = 1, [FromQuery] int pageSize = 20,
             [FromQuery] string? search = null, [FromQuery] string? sortBy = null, [FromQuery] bool desc = false)
         {
-            // Get permissions directly from JWT token claims
             var permissionClaims = User.FindAll("perm").Select(c => c.Value).ToList();
 
             if (!permissionClaims.Any())
@@ -102,7 +96,6 @@ namespace StartBack.Api.Controllers
                 });
             }
 
-            // Extract report names from user's permissions that follow pattern Reports.{nameEn}.View
             var allowedReportNames = new List<string>();
             foreach (var permission in permissionClaims)
             {
@@ -111,7 +104,7 @@ namespace StartBack.Api.Controllers
                     var parts = permission.Split('.');
                     if (parts.Length == 3)
                     {
-                        var reportName = parts[1]; // This is the nameEn of the report
+                        var reportName = parts[1];
                         if (!allowedReportNames.Contains(reportName))
                         {
                             allowedReportNames.Add(reportName);
@@ -131,11 +124,9 @@ namespace StartBack.Api.Controllers
                 });
             }
 
-            // Get all reports and filter by the ones user has permission for
             var allReports = await _reportService.GetAllAsync(new FindOptions { PageSize = int.MaxValue });
             var userReports = allReports.Items.Where(r => allowedReportNames.Contains(r.NameEn));
 
-            // Apply search filter if provided
             if (!string.IsNullOrWhiteSpace(search))
             {
                 userReports = userReports.Where(r =>
@@ -144,7 +135,6 @@ namespace StartBack.Api.Controllers
                     (r.Description != null && r.Description.Contains(search, StringComparison.OrdinalIgnoreCase)));
             }
 
-            // Apply sorting
             if (!string.IsNullOrWhiteSpace(sortBy))
             {
                 userReports = sortBy.ToLower() switch
@@ -172,59 +162,69 @@ namespace StartBack.Api.Controllers
             });
         }
 
-        //[HttpPost("execute-report")]
-        //public async Task<ActionResult<PaginatedResult<ReportDto>>> ExecuteReport(int reportId)
-        //{
-        //    var report = await _reportService.GetByIdAsync(reportId);
-        //    if (report == null)
-        //        throw new NotFoundException("Report", report.Name);
-        //    var sql = report.Query;
-        //    var sqlParameters = report.Parameters;
-        //    sqlParameters = sqlParameters.OrderBy(p => p.Sort).ToList(); // Ensure parameters are sorted by name
-        //    var oracleParameters = new List<OracleParameter>();
-        //    int index = 0;
-
-        //    foreach (var param in sqlParameters)
-        //    {
-        //        //if (param.DataType.ToLower() == "number")
-
-
-        //        // Ensure the sort of oracleParameters and add them in the same order as in the query  
-        //        oracleParameters.Add(new OracleParameter(param.Name, param.DataType) { Value = param.DefaultValue });
-        //        index++;
-        //    }
-        //    var resultTable = await _oracleExecutor.ExecuteQueryAsync(sql, oracleParameters.ToArray());
-        //    return Ok(resultTable);
-        //}
 
         [HttpPost("execute-report")]
         public async Task<ActionResult<PaginatedResult<Dictionary<string, object>>>> ExecuteReport(
                     int reportId,
-                    [FromBody] FindOptions? findOptions = null)
+                    [FromBody] ExecuteReportRequest request)
         {
             var report = await _reportService.GetByIdAsync(reportId);
             if (report == null)
-                throw new NotFoundException("Report", report.NameEn);
+                throw new NotFoundException("Report", reportId.ToString());
 
             var sql = report.Query;
-            var sqlParameters = report.Parameters;
+            var sqlParameters = report.Parameters ?? new List<ReportParameterDto>();
             sqlParameters = sqlParameters.OrderBy(p => p.Sort).ToList();
 
-            var oracleParameters = new List<OracleParameter>();
-            int index = 0;
+            var npgsqlParameters = new List<NpgsqlParameter>();
 
             foreach (var param in sqlParameters)
             {
-                oracleParameters.Add(new OracleParameter(param.Name, param.DataType) { Value = param.DefaultValue });
-                index++;
+                object? value = null;
+
+                if (request.Parameters != null && request.Parameters.ContainsKey(param.Name))
+                {
+                    value = request.Parameters[param.Name];
+
+                    if (value is System.Text.Json.JsonElement jsonElement)
+                    {
+                        switch (jsonElement.ValueKind)
+                        {
+                            case System.Text.Json.JsonValueKind.String:
+                                value = jsonElement.GetString();
+                                break;
+                            case System.Text.Json.JsonValueKind.Number:
+                                if (jsonElement.TryGetInt32(out int i)) value = i;
+                                else if (jsonElement.TryGetDecimal(out decimal d)) value = d;
+                                else value = jsonElement.ToString();
+                                break;
+                            case System.Text.Json.JsonValueKind.True:
+                                value = true;
+                                break;
+                            case System.Text.Json.JsonValueKind.False:
+                                value = false;
+                                break;
+                            case System.Text.Json.JsonValueKind.Null:
+                                value = null;
+                                break;
+                            default:
+                                value = jsonElement.ToString();
+                                break;
+                        }
+                    }
+                }
+
+                if (value == null && !string.IsNullOrEmpty(param.DefaultValue))
+                {
+                    value = param.DefaultValue;
+                }
+
+                npgsqlParameters.Add(new NpgsqlParameter(param.Name, value ?? DBNull.Value));
             }
 
-            var result = await _oracleExecutor.ExecuteQueryAsync(sql, oracleParameters.ToArray(), findOptions);
+            var result = await _postgreExecutor.ExecuteQueryAsync(sql, npgsqlParameters.ToArray(), request.FindOptions);
             return Ok(result);
         }
-
-
-
 
 
         [HttpGet("dashboard-cards")]
@@ -240,13 +240,13 @@ namespace StartBack.Api.Controllers
                     throw new NotFoundException("Report", name);
                 var sql = report.Query;
                 var sqlParameters = report.Parameters;
-                sqlParameters = sqlParameters.OrderBy(p => p.Sort).ToList(); // Ensure parameters are sorted by name
-                var oracleParameters = new List<OracleParameter>();
+                sqlParameters = sqlParameters.OrderBy(p => p.Sort).ToList();
+                var npgsqlParameters = new List<NpgsqlParameter>();
                 foreach (var param in sqlParameters)
                 {
-                    oracleParameters.Add(new OracleParameter(param.Name, param.DataType) { Value = param.DefaultValue });
+                    npgsqlParameters.Add(new NpgsqlParameter(param.Name, param.DefaultValue ?? (object)DBNull.Value));
                 }
-                var scalarValue = await _oracleExecutor.ExecuteScalarAsync(sql, oracleParameters.ToArray());
+                var scalarValue = await _postgreExecutor.ExecuteScalarAsync(sql, npgsqlParameters.ToArray());
                 scalarResults.Add(new ScalarReportDto
                 {
                     Name = report.NameAr ?? "",
@@ -254,15 +254,12 @@ namespace StartBack.Api.Controllers
                 });
             }
             return Ok(scalarResults);
-
-
         }
 
 
         [HttpGet("{reportId}/columns")]
         public async Task<ActionResult<List<ReportColumnDto>>> GetColumnsByReportId(int reportId)
         {
-
             var columns = await _reportService.GetColumnsByReportIdAsync(reportId);
             return Ok(columns);
         }
@@ -271,10 +268,8 @@ namespace StartBack.Api.Controllers
         [HttpPost("{reportId}/columns")]
         public async Task<ActionResult<List<ReportColumnDto>>> CreateColumnsForReport(int reportId, List<ReportColumnCreateDto> columns)
         {
-
             await _reportService.CreateColumnsAsync(reportId, columns);
             return Ok(columns);
-
         }
 
         [HttpPut("{reportId}/columns/{columnId}")]
@@ -284,16 +279,84 @@ namespace StartBack.Api.Controllers
             return NoContent();
         }
 
+        [HttpGet("{reportId}/parameters")]
+        public async Task<ActionResult<List<ReportParameterDto>>> GetParametersByReportId(int reportId)
+        {
+            var parameters = await _reportService.GetParametersByReportIdAsync(reportId);
+            return Ok(parameters);
+        }
 
+        [HttpPost("{reportId}/parameters")]
+        public async Task<ActionResult<List<ReportParameterDto>>> CreateParametersForReport(int reportId, List<ReportParameterCreateDto> parameters)
+        {
+            await _reportService.CreateParametersAsync(reportId, parameters);
+            return Ok(parameters);
+        }
 
+        [HttpPut("{reportId}/parameters/{parameterId}")]
+        public async Task<IActionResult> UpdateParameter(int reportId, int parameterId, [FromBody] ReportParameterCreateDto dto)
+        {
+            await _reportService.UpdateParameterAsync(reportId, parameterId, dto);
+            return NoContent();
+        }
 
+        /// <summary>
+        /// Execute a dropdown query to get options for a parameter dropdown
+        /// </summary>
+        [HttpPost("execute-dropdown-query")]
+        public async Task<ActionResult<List<DropdownOption>>> ExecuteDropdownQuery([FromBody] DropdownQueryRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Query))
+            {
+                return BadRequest("Query cannot be empty");
+            }
 
-
-
-
-
-
-
+            try
+            {
+                var results = await _postgreExecutor.ExecuteQueryAsync(request.Query, Array.Empty<NpgsqlParameter>());
+                
+                var options = new List<DropdownOption>();
+                foreach (var row in results.Items)
+                {
+                    var option = new DropdownOption();
+                    
+                    // Try to get value (case-insensitive)
+                    if (row.TryGetValue("value", out var val) || row.TryGetValue("Value", out val) || row.TryGetValue("VALUE", out val))
+                    {
+                        option.Value = val?.ToString() ?? "";
+                    }
+                    else if (row.Count > 0)
+                    {
+                        option.Value = row.Values.First()?.ToString() ?? "";
+                    }
+                    
+                    // Try to get label (case-insensitive)
+                    if (row.TryGetValue("label", out var lbl) || row.TryGetValue("Label", out lbl) || row.TryGetValue("LABEL", out lbl))
+                    {
+                        option.Label = lbl?.ToString() ?? "";
+                    }
+                    else if (row.TryGetValue("name", out lbl) || row.TryGetValue("Name", out lbl) || row.TryGetValue("NAME", out lbl))
+                    {
+                        option.Label = lbl?.ToString() ?? "";
+                    }
+                    else if (row.Count > 1)
+                    {
+                        option.Label = row.Values.Skip(1).First()?.ToString() ?? "";
+                    }
+                    else
+                    {
+                        option.Label = option.Value;
+                    }
+                    
+                    options.Add(option);
+                }
+                
+                return Ok(options);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Failed to execute dropdown query: {ex.Message}");
+            }
+        }
     }
 }
-

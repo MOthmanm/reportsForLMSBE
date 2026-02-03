@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using StartBack.Domain.Interfaces;
 using StartBack.Application.DTOs.Report;
 using StartBack.Application.DTOs.ReportColumn;
+using StartBack.Application.DTOs.ReportParameter;
 using StartBack.Domain.Entities;
 using StartBack.Domain.Exceptions;
 using StartBack.Domain.Helpers;
@@ -17,15 +18,17 @@ namespace StartBack.Application.Services
         private readonly IGenericRepository<Permission> _permissionRepository;
 
         private readonly IGenericRepository<ReportColumn> _reportColumnRepository;
+        private readonly IGenericRepository<ReportParameter> _reportParameterRepository;
         private readonly IMapper _mapper;
 
-        public ReportService(IGenericRepository<Report> reportRepository, IMapper mapper, IGenericRepository<ReportColumn> reportColumnRepository, IGenericRepository<Permission> permissionRepository)
+        public ReportService(IGenericRepository<Report> reportRepository, IMapper mapper, IGenericRepository<ReportColumn> reportColumnRepository, IGenericRepository<Permission> permissionRepository, IGenericRepository<ReportParameter> reportParameterRepository)
         {
             _reportRepository = reportRepository;
 
             _mapper = mapper;
             _reportColumnRepository = reportColumnRepository;
             _permissionRepository = permissionRepository;
+            _reportParameterRepository = reportParameterRepository;
         }
 
         public async Task<PaginatedResult<ReportDto>> GetAllAsync(FindOptions options)
@@ -111,7 +114,7 @@ namespace StartBack.Application.Services
 
         public async Task UpdateAsync(int id, ReportUpdateDto dto)
         {
-            var report = await _reportRepository.GetByIdAsync(id);
+            var report = await _reportRepository.GetByIdAsync(id, q => q.Include(t => t.Parameters));
             if (report == null)
                 throw new NotFoundException("Report", id.ToString());
             _mapper.Map(dto, report);
@@ -174,6 +177,46 @@ namespace StartBack.Application.Services
             _mapper.Map(dto, column);
             await _reportColumnRepository.Update(column);
             return _mapper.Map<ReportColumnDto>(column);
+        }
+
+        public async Task<List<ReportParameterDto>> GetParametersByReportIdAsync(int reportId)
+        {
+            var report = await _reportRepository.GetByIdAsync(reportId, q => q.Include(t => t.Parameters));
+            if (report == null)
+                throw new NotFoundException("Report", reportId.ToString());
+
+            return _mapper.Map<List<ReportParameterDto>>(report.Parameters);
+        }
+
+        public async Task<List<ReportParameterDto>> CreateParametersAsync(int reportId, List<ReportParameterCreateDto> reportParameters)
+        {
+            var report = await _reportRepository.GetByIdAsync(reportId);
+            if (report == null)
+                throw new NotFoundException("Report", reportId.ToString());
+
+            foreach (var paramDto in reportParameters)
+            {
+                var parameter = _mapper.Map<ReportParameter>(paramDto);
+                parameter.ReportId = reportId;
+                await _reportParameterRepository.AddAsync(parameter);
+            }
+
+            var parameters = _mapper.Map<List<ReportParameterDto>>(reportParameters);
+            return parameters;
+        }
+
+        public async Task<ReportParameterDto> UpdateParameterAsync(int reportId, int parameterId, ReportParameterCreateDto dto)
+        {
+            var report = await _reportRepository.GetByIdAsync(reportId);
+            if (report == null)
+                throw new NotFoundException("Report", reportId.ToString());
+            var parameter = await _reportParameterRepository.GetByIdAsync(parameterId);
+            if (parameter == null)
+                throw new NotFoundException("ReportParameter", parameterId.ToString());
+            
+            _mapper.Map(dto, parameter);
+            await _reportParameterRepository.Update(parameter);
+            return _mapper.Map<ReportParameterDto>(parameter);
         }
 
 

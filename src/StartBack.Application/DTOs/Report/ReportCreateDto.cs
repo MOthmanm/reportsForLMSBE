@@ -14,6 +14,7 @@ namespace StartBack.Application.DTOs.Report
         public bool HasDetail { get; set; } = false;
         public int? DetailId { get; set; }
         public string? DetailColumn { get; set; }
+        public List<StartBack.Application.DTOs.ReportParameter.ReportParameterCreateDto>? Parameters { get; set; }
 
 
     }
