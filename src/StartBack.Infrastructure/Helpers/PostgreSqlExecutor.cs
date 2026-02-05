@@ -145,7 +145,9 @@ namespace StartBack.Infrastructure.Helpers
         private string ApplySorting(string sql, string? sortBy, bool desc)
         {
             if (string.IsNullOrEmpty(sortBy)) return sql;
-            return $"{sql} ORDER BY \"{sortBy}\" {(desc ? "DESC" : "ASC")}";
+            // Wrap the original query as a subquery to avoid conflicts with existing ORDER BY
+            // and ensure column references work correctly
+            return $"SELECT * FROM ({sql}) AS sorted_query ORDER BY \"{sortBy}\" {(desc ? "DESC" : "ASC")}";
         }
 
         private string ApplyPagination(string sql, int page, int pageSize)

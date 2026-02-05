@@ -14,6 +14,7 @@
         public bool Hide { get; set; } = false;
         public int? DetailId { get; set; }
         public string? DetailColumn { get; set; }
+        public string? ReportType { get; set; } // 'table', 'crosstab', 'chart'
         public List<ReportColumn>? Columns { get; set; }
         public List<ReportParameter>? Parameters { get; set; }
 

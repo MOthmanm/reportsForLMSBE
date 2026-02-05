@@ -23,6 +23,7 @@ namespace StartBack.Application.DTOs.Report
         public bool Hide { get; set; }
         public int? DetailId { get; set; }
         public string? DetailColumn { get; set; }
+        public string? ReportType { get; set; } // 'table', 'crosstab', 'chart'
 
         public List<ReportColumnDto>? Columns { get; set; }
         public List<ReportParameterDto>? Parameters { get; set; }

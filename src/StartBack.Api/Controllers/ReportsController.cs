@@ -182,34 +182,41 @@ namespace StartBack.Api.Controllers
             {
                 object? value = null;
 
-                if (request.Parameters != null && request.Parameters.ContainsKey(param.Name))
+                // Case-insensitive parameter lookup
+                if (request.Parameters != null)
                 {
-                    value = request.Parameters[param.Name];
-
-                    if (value is System.Text.Json.JsonElement jsonElement)
+                    var paramEntry = request.Parameters.FirstOrDefault(p => 
+                        p.Key.Equals(param.Name, StringComparison.OrdinalIgnoreCase));
+                    
+                    if (!string.IsNullOrEmpty(paramEntry.Key))
                     {
-                        switch (jsonElement.ValueKind)
+                        value = paramEntry.Value;
+
+                        if (value is System.Text.Json.JsonElement jsonElement)
                         {
-                            case System.Text.Json.JsonValueKind.String:
-                                value = jsonElement.GetString();
-                                break;
-                            case System.Text.Json.JsonValueKind.Number:
-                                if (jsonElement.TryGetInt32(out int i)) value = i;
-                                else if (jsonElement.TryGetDecimal(out decimal d)) value = d;
-                                else value = jsonElement.ToString();
-                                break;
-                            case System.Text.Json.JsonValueKind.True:
-                                value = true;
-                                break;
-                            case System.Text.Json.JsonValueKind.False:
-                                value = false;
-                                break;
-                            case System.Text.Json.JsonValueKind.Null:
-                                value = null;
-                                break;
-                            default:
-                                value = jsonElement.ToString();
-                                break;
+                            switch (jsonElement.ValueKind)
+                            {
+                                case System.Text.Json.JsonValueKind.String:
+                                    value = jsonElement.GetString();
+                                    break;
+                                case System.Text.Json.JsonValueKind.Number:
+                                    if (jsonElement.TryGetInt32(out int i)) value = i;
+                                    else if (jsonElement.TryGetDecimal(out decimal d)) value = d;
+                                    else value = jsonElement.ToString();
+                                    break;
+                                case System.Text.Json.JsonValueKind.True:
+                                    value = true;
+                                    break;
+                                case System.Text.Json.JsonValueKind.False:
+                                    value = false;
+                                    break;
+                                case System.Text.Json.JsonValueKind.Null:
+                                    value = null;
+                                    break;
+                                default:
+                                    value = jsonElement.ToString();
+                                    break;
+                            }
                         }
                     }
                 }
@@ -219,7 +226,31 @@ namespace StartBack.Api.Controllers
                     value = param.DefaultValue;
                 }
 
+                // Convert value based on DataType
+                if (value != null && !string.IsNullOrEmpty(param.DataType))
+                {
+                    try
+                    {
+                        value = param.DataType.ToLower() switch
+                        {
+                            "date" => DateTime.TryParse(value.ToString(), out var dateValue) ? dateValue.Date : value,
+                            "datetime" => DateTime.TryParse(value.ToString(), out var dtValue) ? dtValue : value,
+                            "int" or "integer" => int.TryParse(value.ToString(), out var intValue) ? intValue : value,
+                            "bool" or "boolean" => bool.TryParse(value.ToString(), out var boolValue) ? boolValue : value,
+                            "decimal" or "numeric" => decimal.TryParse(value.ToString(), out var decValue) ? decValue : value,
+                            _ => value
+                        };
+                    }
+                    catch
+                    {
+                        // If conversion fails, use the original value
+                    }
+                }
+
                 npgsqlParameters.Add(new NpgsqlParameter(param.Name, value ?? DBNull.Value));
+                
+                // Replace :paramName with @paramName for PostgreSQL compatibility
+                sql = sql.Replace($":{param.Name}", $"@{param.Name}");
             }
 
             var result = await _postgreExecutor.ExecuteQueryAsync(sql, npgsqlParameters.ToArray(), request.FindOptions);
@@ -245,6 +276,8 @@ namespace StartBack.Api.Controllers
                 foreach (var param in sqlParameters)
                 {
                     npgsqlParameters.Add(new NpgsqlParameter(param.Name, param.DefaultValue ?? (object)DBNull.Value));
+                    // Replace :paramName with @paramName for PostgreSQL compatibility
+                    sql = sql.Replace($":{param.Name}", $"@{param.Name}");
                 }
                 var scalarValue = await _postgreExecutor.ExecuteScalarAsync(sql, npgsqlParameters.ToArray());
                 scalarResults.Add(new ScalarReportDto
