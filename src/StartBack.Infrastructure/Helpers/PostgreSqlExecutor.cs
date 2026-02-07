@@ -116,6 +116,8 @@ namespace StartBack.Infrastructure.Helpers
                 "GREATERTHAN" => $"{columnName} > '{escapedValue}'",
                 "LESSTHAN" => $"{columnName} < '{escapedValue}'",
                 "NOTEQUAL" => $"{columnName} != '{escapedValue}'",
+                "GREATERTHANOREQUAL" => $"{columnName} >= '{escapedValue}'",
+                "LESSTHANOREQUAL" => $"{columnName} <= '{escapedValue}'",
                 "ISNULL" => $"{columnName} IS NULL",
                 "ISNOTNULL" => $"{columnName} IS NOT NULL",
                 _ => $"{columnName} = '{escapedValue}'"
