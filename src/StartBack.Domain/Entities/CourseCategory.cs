@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Entities.Models.Tables;
 
-public class CourseCategory : BaseTable
+public class CourseCategory : BaseTable, ITenantEntity
 {
 
 

@@ -21,3 +21,5 @@ public class LookupCollegeConfiguration : BaseConfiguration<LookupCollege>
     }
 }
 
+
+

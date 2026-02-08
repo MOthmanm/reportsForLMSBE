@@ -15,7 +15,6 @@ public class GradeScaleConfiguration : BaseConfiguration<GradeScale>
         builder.Property(e => e.Id).HasComment("معرّف المقياس");
         builder.Property(e => e.UniversityId).HasComment("معرّف الجامعة");
         builder.Property(e => e.Title).HasComment("اسم المقياس");
-        builder.Property(e => e.MaxValue).HasDefaultValue(0m);
         builder.Property(e => e.Description).HasComment("وصف المقياس");
         builder.Property(e => e.IsDefault).HasComment("هل المقياس الافتراضي");
         builder.Property(e => e.AcademicYearId).HasComment("معرّف السنة الدراسية");
@@ -27,6 +26,11 @@ public class GradeScaleConfiguration : BaseConfiguration<GradeScale>
        .WithMany(d=>d.GradeScales)
        .HasForeignKey(d => d.AcademicYearId)
        .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasMany(d => d.Courses)
+               .WithOne(c => c.GradeScale)
+               .HasForeignKey(c => c.GradeScaleId)
+               .OnDelete(DeleteBehavior.Restrict);
 
     }
 }

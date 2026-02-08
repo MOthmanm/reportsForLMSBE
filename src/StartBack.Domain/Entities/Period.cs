@@ -7,7 +7,7 @@ namespace Entities.Models.Tables;
 /// <summary>
 /// جدول الفترات الزمنية اليومية
 /// </summary>
-public class Period : BaseTable
+public class Period : BaseTable, ITenantEntity
 {
 
  

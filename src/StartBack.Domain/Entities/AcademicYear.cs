@@ -6,7 +6,7 @@ namespace Entities.Models.Tables;
 /// <summary>
 /// جدول السنوات الدراسية
 /// </summary>
-public class AcademicYear : BaseTable
+public class AcademicYear : BaseTable, ITenantEntity
 {
 
     /// <summary>

@@ -7,7 +7,7 @@ namespace Entities.Models.Tables;
 /// <summary>
 /// جدول حوادث السلوك والانضباط
 /// </summary>
-public class DisciplineIncident : BaseTable
+public class DisciplineIncident : BaseTable, ITenantEntity
 {
     /// <summary>
     /// معرّف الجامعة

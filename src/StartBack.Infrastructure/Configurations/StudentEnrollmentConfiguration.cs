@@ -38,5 +38,36 @@ public class StudentEnrollmentConfiguration : BaseConfiguration<StudentEnrollmen
                .HasForeignKey(d => d.AcademicLevelIterationId)
                .OnDelete(DeleteBehavior.Restrict)
                .IsRequired(false);
+
+        // ÇáÊÓßíä
+        builder.HasOne(d => d.Building)
+                .WithMany(p => p.StudentEnrollments)
+                .HasForeignKey(d => d.BuildingId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(d => d.Floor)
+        .WithMany(p => p.StudentEnrollments)
+        .HasForeignKey(d => d.FloorId)
+        .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(d => d.Room)
+            .WithMany(p => p.StudentEnrollments)
+            .HasForeignKey(d => d.RoomId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(d => d.Battalion)
+            .WithMany(p => p.StudentEnrollments)
+            .HasForeignKey(d => d.BattalionId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(d => d.Company)
+            .WithMany(p => p.StudentEnrollments)
+            .HasForeignKey(d => d.CompanyId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(d => d.Platoon)
+            .WithMany(p => p.StudentEnrollments)
+            .HasForeignKey(d => d.PlatoonId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

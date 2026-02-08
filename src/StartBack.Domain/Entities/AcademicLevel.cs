@@ -6,7 +6,7 @@ namespace Entities.Models.Tables;
 /// <summary>
 /// جدول المستويات الأكاديمية (شجرة هرمية)
 /// </summary>
-public class AcademicLevel : BaseTable
+public class AcademicLevel : BaseTable, ITenantEntity
 {
 
     /// <summary>

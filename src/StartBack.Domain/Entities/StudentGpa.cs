@@ -6,7 +6,7 @@ namespace Entities.Models.Tables;
 /// <summary>
 /// جدول المعدل التراكمي المحسوب للطلاب
 /// </summary>
-public class StudentGpa : BaseTable
+public class StudentGpa : BaseTable, ITenantEntity
 {
     /// <summary>
     /// معرّف علاقة الطالب بالجامعة

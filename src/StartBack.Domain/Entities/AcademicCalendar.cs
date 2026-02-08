@@ -6,7 +6,7 @@ namespace Entities.Models.Tables;
 /// <summary>
 /// جدول التقويمات الأكاديمية
 /// </summary>
-public class AcademicCalendar : BaseTable
+public class AcademicCalendar : BaseTable, ITenantEntity
 {
     public string Title { get; set; } = null!;
     public int UniversityId { get; set; }

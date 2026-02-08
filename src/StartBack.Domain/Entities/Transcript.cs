@@ -6,7 +6,7 @@ namespace Entities.Models.Tables;
 /// <summary>
 /// جدول السجل الأكاديمي (الشهادة الدراسية)
 /// </summary>
-public class Transcript : BaseTable
+public class Transcript : BaseTable, ITenantEntity
 {
     /// <summary>
     /// معرّف علاقة الطالب بالجامعة

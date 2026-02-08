@@ -10,7 +10,7 @@ public class CourseSectionMeeting : BaseTable
 {
     public int CourseSemesterSectionId { get; set; }
     public int PeriodId { get; set; }
-    public int RoomId { get; set; }
+    public int HallId { get; set; }
     public int? CourseInstructorId { get; set; }
     public DateOnly MeetingDate { get; set; }
     public bool IsCancelled { get; set; } = false;
@@ -19,6 +19,6 @@ public class CourseSectionMeeting : BaseTable
     public string? CancelReason { get; set; }
     public virtual CourseSemesterSection? CourseSemesterSection { get; set; }
     public virtual Period? Period { get; set; }
-    public virtual Room? Room { get; set; }
+    public virtual Hall? Hall { get; set; }
     public virtual CourseInstructor? CourseInstructor { get; set; }
 }

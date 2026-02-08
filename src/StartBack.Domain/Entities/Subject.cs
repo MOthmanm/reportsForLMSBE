@@ -6,7 +6,7 @@ namespace Entities.Models.Tables;
 /// <summary>
 /// جدول المواد الدراسية
 /// </summary>
-public class Subject : BaseTable
+public class Subject : BaseTable, ITenantEntity
 {
     /// <summary>
     /// معرّف الجامعة

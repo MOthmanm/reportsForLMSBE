@@ -6,7 +6,7 @@ namespace Entities.Models.Tables;
 /// <summary>
 /// جدول الفصول والشعب الدراسية
 /// </summary>
-public class Section : BaseTable
+public class Section : BaseTable, ITenantEntity
 {
 
     public string Name { get; set; } = null!;

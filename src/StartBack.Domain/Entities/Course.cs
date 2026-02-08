@@ -7,7 +7,7 @@ namespace Entities.Models.Tables;
 /// <summary>
 /// جدول المقررات الدراسية
 /// </summary>
-public class Course : BaseTable
+public class Course : BaseTable, ITenantEntity
 {
 
     [Required]
@@ -59,6 +59,7 @@ public class Course : BaseTable
     public virtual ICollection<AcademicLevelCourse> AcademicLevelCourses { get; set; } = new List<AcademicLevelCourse>();
     public virtual ICollection<CourseSemester> CourseSemesters  { get; set; } = new List<CourseSemester>();
     public virtual ICollection<CourseInstructor> CourseInstructors { get; set; } = new List<CourseInstructor>();
+    public virtual ICollection<CourseDegreeDevisionCourse> CourseDegreeDevisionCourses  { get; set; } = new List<CourseDegreeDevisionCourse>();
 
 
 

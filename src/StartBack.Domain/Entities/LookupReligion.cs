@@ -39,4 +39,3 @@ public class LookupReligion : BaseTable
     /// </summary>
     public bool IsActive { get; set; } = true;
 }
-

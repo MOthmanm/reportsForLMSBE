@@ -6,7 +6,7 @@ namespace Entities.Models.Tables;
 /// <summary>
 /// جدول تعيينات الموظفين في الجامعات
 /// </summary>
-public class StaffUniversityAssignment : BaseTable
+public class StaffUniversityAssignment : BaseTable, ITenantEntity
 {
     /// <summary>
     /// معرّف علاقة الموظف بالجامعة

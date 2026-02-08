@@ -1,6 +1,7 @@
 using StartBack.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Entities.Models.Tables;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace StartBack.Infrastructure.Persistence;
 
@@ -18,6 +19,14 @@ public class AemzDbContext : DbContext
     public DbSet<ReportColumn> ReportColumns => Set<ReportColumn>();
     public DbSet<ReportParameter> ReportParameters => Set<ReportParameter>();
     public DbSet<Assignment> Assignments => Set<Assignment>();
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.ConfigureWarnings(warnings => 
+            warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
+        
+        base.OnConfiguring(optionsBuilder);
+    }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

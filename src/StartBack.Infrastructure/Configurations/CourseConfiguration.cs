@@ -40,6 +40,12 @@ public class CourseConfiguration : BaseConfiguration<Course>
                .OnDelete(DeleteBehavior.Restrict)
                .IsRequired(false);
 
+        builder.HasOne(d => d.GradeScale)
+               .WithMany()
+               .HasForeignKey(d => d.GradeScaleId)
+               .OnDelete(DeleteBehavior.Restrict)
+               .IsRequired(false);
+
         builder.HasIndex(e => new { e.UniversityId, e.Code }).IsUnique();
     }
 }
