@@ -24,7 +24,8 @@ public class JwtTokenService : IJwtTokenService
         {
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new(JwtRegisteredClaimNames.UniqueName, user.Username),
-            new("display_name", dto.DisplayName)
+            new("display_name", dto.DisplayName),
+            new("tenant_id", "default") // Required by InsightEngine
         };
         // roles
         claims.AddRange(dto.Roles.Select(r => new Claim(ClaimTypes.Role, r.Name)));

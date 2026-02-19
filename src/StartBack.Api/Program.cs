@@ -1,4 +1,7 @@
 using StartBack.Infrastructure.Extensions;
+using InsightEngine.Api;
+using InsightEngine.Infrastructure;
+using InsightEngine.Infrastructure.Configuration;
 using StartBack.Infrastructure.Persistence;
 using StartBack.Infrastructure.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using Microsoft.OpenApi.Models;
 using StartBack.Application.Extensions;
+using Asp.Versioning;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,7 +47,37 @@ builder.Services.AddSwaggerGen(c =>
 // Persistence + Infrastructure
 builder.Services.AddSqlServerPersistence(builder.Configuration);
 builder.Services.AddInfrastructureEf();
+builder.Services.AddInfrastructureEf();
 builder.Services.AddApplicationServices();
+
+// InsightEngine Services
+builder.Services.AddInsightEngine(options =>
+{
+    options.DatabaseProvider = DatabaseProviderType.PostgreSQL;
+    options.ConnectionString = builder.Configuration.GetConnectionString("Default")!;
+    options.CacheProvider = CacheProviderType.InMemory;
+    // RLS Configuration for ReportsForLMS
+    options.RlsMapping = new RlsColumnMapping
+    {
+         // Defaulting to loose RLS for initial integration
+         UnrestrictedEntities = new List<string> { "users", "roles" },
+         TenantClaim = "tenant_id"
+    };
+});
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new Asp.Versioning.ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+}).AddMvc()
+.AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
+});
+
+builder.Services.AddInsightEngineControllers();
 
 // CORS: allow frontend dev server
 const string AllowFrontend = "AllowFrontend";
@@ -52,7 +86,7 @@ if (builder.Environment.IsDevelopment())
     builder.Services.AddCors(options =>
 {
     options.AddPolicy(AllowFrontend, policy =>
-        policy.WithOrigins("http://localhost:5174")
+        policy.WithOrigins("http://localhost:5174", "http://localhost:5175")
               .AllowAnyHeader()
               .AllowAnyMethod());
 });
@@ -132,6 +166,7 @@ app.UseRouting();
 app.UseCors(AllowFrontend);
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseInsightEngine();
 app.UseStaticFiles();
 
 app.MapControllers();
