@@ -19,9 +19,9 @@
   <ItemGroup>
     <ProjectReference Include="..\StartBack.Application\StartBack.Application.csproj" />
     <ProjectReference Include="..\StartBack.Infrastructure\StartBack.Infrastructure.csproj" />
-    <PackageReference Include="InsightEngine.Core" Version="1.0.20" />
-    <PackageReference Include="InsightEngine.Infrastructure" Version="1.0.20" />
-    <PackageReference Include="InsightEngine.Api" Version="1.0.20" />
+    <PackageReference Include="InsightEngine.Core" Version="1.0.21" />
+    <PackageReference Include="InsightEngine.Infrastructure" Version="1.0.21" />
+    <PackageReference Include="InsightEngine.Api" Version="1.0.21" />
   </ItemGroup>
 
 </Project>
