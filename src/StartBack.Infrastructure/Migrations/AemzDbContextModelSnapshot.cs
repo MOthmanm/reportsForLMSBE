@@ -27,74 +27,92 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف التقويم");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AcademicYearId")
                         .HasColumnType("integer")
+                        .HasColumnName("academic_year_id")
                         .HasComment("معرّف السنة الدراسية");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateOnly>("EndDate")
-                        .HasColumnType("date");
+                        .HasColumnType("date")
+                        .HasColumnName("end_date");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDefault")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_default")
                         .HasComment("هل هو الافتراضي");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("RecurringDays")
                         .HasColumnType("text")
+                        .HasColumnName("recurring_days")
                         .HasComment("أيام التكرار (JSON)");
 
                     b.Property<DateOnly>("StartDate")
-                        .HasColumnType("date");
+                        .HasColumnType("date")
+                        .HasColumnName("start_date");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text")
+                        .HasColumnName("title")
                         .HasComment("عنوان التقويم");
 
                     b.Property<int>("UniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("university_id")
                         .HasComment("معرّف الجامعة");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_academic_calendar");
 
                     b.HasIndex("AcademicYearId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_academic_calendar_academic_year_id");
 
-                    b.HasIndex("UniversityId");
+                    b.HasIndex("UniversityId")
+                        .HasDatabaseName("ix_academic_calendar_university_id");
 
-                    b.ToTable("AcademicCalendar", t =>
+                    b.ToTable("academic_calendar", null, t =>
                         {
                             t.HasComment("جدول التقويمات الأكاديمية");
                         });
@@ -105,60 +123,74 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف اليوم");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AcademicCalendarId")
                         .HasColumnType("integer")
+                        .HasColumnName("academic_calendar_id")
                         .HasComment("معرّف التقويم");
 
                     b.Property<DateOnly>("AcademicDate")
                         .HasColumnType("date")
+                        .HasColumnName("academic_date")
                         .HasComment("التاريخ");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<int>("HolidayType")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("holiday_type");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("Notes")
                         .HasColumnType("text")
+                        .HasColumnName("notes")
                         .HasComment("ملاحظات (مثل: إجازة 6 أكتوبر)");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_academic_calendar_detail");
 
                     b.HasIndex("AcademicCalendarId", "AcademicDate")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_academic_calendar_detail_academic_calendar_id_academic_date");
 
-                    b.ToTable("AcademicCalendarDetail", t =>
+                    b.ToTable("academic_calendar_detail", null, t =>
                         {
                             t.HasComment("جدول أيام التقويم الأكاديمي");
                         });
@@ -169,84 +201,105 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف المستوى");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<int?>("NextLevelId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("next_level_id");
 
                     b.Property<int?>("ParentId")
                         .HasColumnType("integer")
+                        .HasColumnName("parent_id")
                         .HasComment("معرّف المستوى الأب");
 
                     b.Property<int?>("PreviousLevelId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("previous_level_id");
 
                     b.Property<string>("ShortName")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
+                        .HasColumnName("short_name")
                         .HasComment("الاسم المختصر");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("title")
                         .HasComment("اسم المستوى");
 
                     b.Property<int>("UniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("university_id")
                         .HasComment("معرّف الجامعة");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_academic_level");
 
-                    b.HasIndex("NextLevelId");
+                    b.HasIndex("NextLevelId")
+                        .HasDatabaseName("ix_academic_level_next_level_id");
 
-                    b.HasIndex("ParentId");
+                    b.HasIndex("ParentId")
+                        .HasDatabaseName("ix_academic_level_parent_id");
 
-                    b.HasIndex("PreviousLevelId");
+                    b.HasIndex("PreviousLevelId")
+                        .HasDatabaseName("ix_academic_level_previous_level_id");
 
-                    b.HasIndex("UniversityId");
+                    b.HasIndex("UniversityId")
+                        .HasDatabaseName("ix_academic_level_university_id");
 
-                    b.ToTable("AcademicLevel", t =>
+                    b.ToTable("academic_level", null, t =>
                         {
                             t.HasComment("جدول المستويات");
                         });
@@ -256,58 +309,72 @@ namespace StartBack.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AcademicLevelId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("academic_level_id");
 
                     b.Property<int>("CourseId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("course_id");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(true)
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_academic_level_course");
 
-                    b.HasIndex("AcademicLevelId");
+                    b.HasIndex("AcademicLevelId")
+                        .HasDatabaseName("ix_academic_level_course_academic_level_id");
 
-                    b.HasIndex("CourseId");
+                    b.HasIndex("CourseId")
+                        .HasDatabaseName("ix_academic_level_course_course_id");
 
-                    b.ToTable("AcademicLevelCourse");
+                    b.ToTable("academic_level_course", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.Tables.AcademicLevelIteration", b =>
@@ -315,69 +382,86 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف المستوى");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AcademicLevelId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("academic_level_id");
 
                     b.Property<int>("AcademicYearId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("academic_year_id");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("date")
+                        .HasColumnName("end_date")
                         .HasComment("تاريخ النهاية");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(80)
-                        .HasColumnType("character varying(80)");
+                        .HasColumnType("character varying(80)")
+                        .HasColumnName("name");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date")
+                        .HasColumnName("start_date")
                         .HasComment("تاريخ البداية");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_academic_level_iteration");
 
-                    b.HasIndex("AcademicLevelId");
+                    b.HasIndex("AcademicLevelId")
+                        .HasDatabaseName("ix_academic_level_iteration_academic_level_id");
 
-                    b.HasIndex("AcademicYearId");
+                    b.HasIndex("AcademicYearId")
+                        .HasDatabaseName("ix_academic_level_iteration_academic_year_id");
 
-                    b.ToTable("AcademicLevelIteration", t =>
+                    b.ToTable("academic_level_iteration", null, t =>
                         {
                             t.HasComment("جدول المستويات");
                         });
@@ -388,72 +472,88 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف السنة الدراسية");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("date")
+                        .HasColumnName("end_date")
                         .HasComment("تاريخ النهاية");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsCurrent")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_current")
                         .HasComment("هل السنة الحالية");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("ShortName")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
+                        .HasColumnName("short_name")
                         .HasComment("الاسم المختصر");
 
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date")
+                        .HasColumnName("start_date")
                         .HasComment("تاريخ البداية");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("title")
                         .HasComment("عنوان السنة الدراسية");
 
                     b.Property<int>("UniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("university_id")
                         .HasComment("معرّف الجامعة");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_academic_year");
 
-                    b.HasIndex("UniversityId");
+                    b.HasIndex("UniversityId")
+                        .HasDatabaseName("ix_academic_year_university_id");
 
-                    b.ToTable("AcademicYear", t =>
+                    b.ToTable("academic_year", null, t =>
                         {
                             t.HasComment("جدول السنوات الدراسية");
                         });
@@ -464,100 +564,125 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف التكليف");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateOnly?>("AssignedDate")
                         .HasColumnType("date")
+                        .HasColumnName("assigned_date")
                         .HasComment("تاريخ التكليف");
 
                     b.Property<int?>("AssignmentTypeId")
                         .HasColumnType("integer")
+                        .HasColumnName("assignment_type_id")
                         .HasComment("معرّف نوع التكليف");
 
                     b.Property<int>("CourseSectionId")
                         .HasColumnType("integer")
+                        .HasColumnName("course_section_id")
                         .HasComment("معرّف حصة المقرر");
 
                     b.Property<int?>("CreatedBy")
                         .HasColumnType("integer")
+                        .HasColumnName("created_by")
                         .HasComment("تم الإنشاء بواسطة");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<string>("Description")
                         .HasColumnType("text")
+                        .HasColumnName("description")
                         .HasComment("وصف التكليف");
 
                     b.Property<DateOnly?>("DueDate")
                         .HasColumnType("date")
+                        .HasColumnName("due_date")
                         .HasComment("تاريخ الاستحقاق");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<bool>("IsExtraCredit")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_extra_credit")
                         .HasComment("هل هو درجات إضافية");
 
                     b.Property<bool>("IsGraded")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_graded")
                         .HasComment("هل يتم تقييمه");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<decimal>("MaxPoints")
                         .HasColumnType("numeric")
+                        .HasColumnName("max_points")
                         .HasComment("النقاط القصوى");
 
                     b.Property<int?>("QuarterId")
                         .HasColumnType("integer")
+                        .HasColumnName("quarter_id")
                         .HasComment("معرّف الربع");
 
                     b.Property<int?>("SemesterId")
                         .HasColumnType("integer")
+                        .HasColumnName("semester_id")
                         .HasComment("معرّف الفصل الدراسي");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("title")
                         .HasComment("عنوان التكليف");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_assignments");
 
-                    b.HasIndex("AssignmentTypeId");
+                    b.HasIndex("AssignmentTypeId")
+                        .HasDatabaseName("ix_assignments_assignment_type_id");
 
-                    b.HasIndex("CourseSectionId");
+                    b.HasIndex("CourseSectionId")
+                        .HasDatabaseName("ix_assignments_course_section_id");
 
-                    b.HasIndex("QuarterId");
+                    b.HasIndex("QuarterId")
+                        .HasDatabaseName("ix_assignments_quarter_id");
 
-                    b.HasIndex("SemesterId");
+                    b.HasIndex("SemesterId")
+                        .HasDatabaseName("ix_assignments_semester_id");
 
-                    b.ToTable("Assignments", t =>
+                    b.ToTable("assignments", null, t =>
                         {
                             t.HasComment("جدول التكليفات والواجبات الدراسية");
                         });
@@ -568,88 +693,109 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف السجل");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AssignmentId")
                         .HasColumnType("integer")
+                        .HasColumnName("assignment_id")
                         .HasComment("معرّف التكليف");
 
                     b.Property<string>("Comment")
                         .HasColumnType("text")
+                        .HasColumnName("comment")
                         .HasComment("تعليق");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime?>("GradedAt")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("graded_at")
                         .HasComment("تم التقييم في");
 
                     b.Property<int?>("GradedBy")
                         .HasColumnType("integer")
+                        .HasColumnName("graded_by")
                         .HasComment("تم التقييم بواسطة");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<bool>("IsExcused")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_excused")
                         .HasComment("معذور");
 
                     b.Property<bool>("IsIncomplete")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_incomplete")
                         .HasComment("غير مكتمل");
 
                     b.Property<bool>("IsLate")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_late")
                         .HasComment("متأخر");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("LetterGrade")
                         .HasMaxLength(5)
                         .HasColumnType("character varying(5)")
+                        .HasColumnName("letter_grade")
                         .HasComment("التقدير");
 
                     b.Property<int>("PersonUniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("person_university_id")
                         .HasComment("معرّف علاقة الطالب بالجامعة");
 
                     b.Property<decimal?>("PointsEarned")
                         .HasColumnType("numeric")
+                        .HasColumnName("points_earned")
                         .HasComment("النقاط المكتسبة");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_assignment_grade");
 
-                    b.HasIndex("PersonUniversityId");
+                    b.HasIndex("PersonUniversityId")
+                        .HasDatabaseName("ix_assignment_grade_person_university_id");
 
                     b.HasIndex("AssignmentId", "PersonUniversityId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_assignment_grade_assignment_id_person_university_id");
 
-                    b.ToTable("AssignmentGrade", t =>
+                    b.ToTable("assignment_grade", null, t =>
                         {
                             t.HasComment("جدول درجات التكليفات (دفتر الدرجات)");
                         });
@@ -660,66 +806,81 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف النوع");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CourseSectionId")
                         .HasColumnType("integer")
+                        .HasColumnName("course_section_id")
                         .HasComment("معرّف حصة المقرر");
 
                     b.Property<decimal?>("DefaultPoints")
                         .HasColumnType("numeric")
+                        .HasColumnName("default_points")
                         .HasComment("النقاط الافتراضية");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("title")
                         .HasComment("عنوان النوع");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
                     b.Property<decimal?>("WeightPercent")
                         .HasColumnType("numeric")
+                        .HasColumnName("weight_percent")
                         .HasComment("النسبة المئوية");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_assignment_type");
 
-                    b.HasIndex("CourseSectionId");
+                    b.HasIndex("CourseSectionId")
+                        .HasDatabaseName("ix_assignment_type_course_section_id");
 
-                    b.ToTable("AssignmentType", t =>
+                    b.ToTable("assignment_type", null, t =>
                         {
                             t.HasComment("جدول أنواع التكليفات والواجبات");
                         });
@@ -730,55 +891,68 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف السجل");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CourseSectionMeetingId")
                         .HasColumnType("integer")
+                        .HasColumnName("course_section_meeting_id")
                         .HasComment("معرّف موعد المحاضرة");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<int>("PersonUniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("person_university_id")
                         .HasComment("معرّف علاقة الموظف بالجامعة");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_attendance_completed");
 
                     b.HasIndex("CourseSectionMeetingId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_attendance_completed_course_section_meeting_id");
 
-                    b.HasIndex("PersonUniversityId");
+                    b.HasIndex("PersonUniversityId")
+                        .HasDatabaseName("ix_attendance_completed_person_university_id");
 
-                    b.ToTable("AttendanceCompleted", t =>
+                    b.ToTable("attendance_completed", null, t =>
                         {
                             t.HasComment("جدول حالة إتمام تسجيل الحضور");
                         });
@@ -789,75 +963,93 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف السجل");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("AttendanceCodeId")
                         .HasColumnType("integer")
+                        .HasColumnName("attendance_code_id")
                         .HasComment("معرّف كود الحضور");
 
                     b.Property<string>("Comment")
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)")
+                        .HasColumnName("comment")
                         .HasComment("ملاحظة");
 
                     b.Property<int>("CourseId")
                         .HasColumnType("integer")
+                        .HasColumnName("course_id")
                         .HasComment("معرّف المقرر");
 
                     b.Property<int>("CourseSectionMeetingId")
                         .HasColumnType("integer")
+                        .HasColumnName("course_section_meeting_id")
                         .HasComment("معرّف موعد المحاضرة");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("Reason")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("reason")
                         .HasComment("السبب");
 
                     b.Property<int>("StudentCourseEnrollmentId")
                         .HasColumnType("integer")
+                        .HasColumnName("student_course_enrollment_id")
                         .HasComment("معرّف تسجيل الطالب في المقرر");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_attendance_period");
 
-                    b.HasIndex("AttendanceCodeId");
+                    b.HasIndex("AttendanceCodeId")
+                        .HasDatabaseName("ix_attendance_period_attendance_code_id");
 
-                    b.HasIndex("CourseSectionMeetingId");
+                    b.HasIndex("CourseSectionMeetingId")
+                        .HasDatabaseName("ix_attendance_period_course_section_meeting_id");
 
                     b.HasIndex("StudentCourseEnrollmentId", "CourseSectionMeetingId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_attendance_period_student_course_enrollment_id_course_secti");
 
-                    b.ToTable("AttendancePeriod", t =>
+                    b.ToTable("attendance_period", null, t =>
                         {
                             t.HasComment("جدول الحضور بالحصة");
                         });
@@ -867,66 +1059,81 @@ namespace StartBack.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Changes")
                         .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("changes");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<string>("EmpSerial")
                         .HasMaxLength(120)
-                        .HasColumnType("character varying(120)");
+                        .HasColumnType("character varying(120)")
+                        .HasColumnName("emp_serial");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<decimal?>("ModuleNo")
                         .HasPrecision(5)
-                        .HasColumnType("numeric(5)");
+                        .HasColumnType("numeric(5,0)")
+                        .HasColumnName("module_no");
 
                     b.Property<string>("TableId")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("table_id");
 
                     b.Property<string>("TableName")
                         .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("table_name");
 
                     b.Property<DateTime?>("TimeStamp")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("time_stamp");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_audit_log");
 
-                    b.ToTable("AuditLog");
+                    b.ToTable("audit_log", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.Tables.Battalion", b =>
@@ -934,6 +1141,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الكتيبة");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -942,67 +1150,82 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
+                        .HasColumnName("code")
                         .HasComment("رمز الكتيبة");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<string>("Description")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)")
+                        .HasColumnName("description")
                         .HasComment("وصف الكتيبة");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("name_ar")
                         .HasComment("اسم الكتيبة بالعربية");
 
                     b.Property<string>("NameEn")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("name_en")
                         .HasComment("اسم الكتيبة بالإنجليزية");
 
                     b.Property<int>("UniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("university_id")
                         .HasComment("معرّف الجامعة");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_battalion");
 
                     b.HasIndex("UniversityId", "Code")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_battalion_university_id_code");
 
-                    b.ToTable("Battalion", t =>
+                    b.ToTable("battalion", null, t =>
                         {
                             t.HasComment("جدول الكتائب العسكرية");
                         });
@@ -1013,6 +1236,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الدفعة");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -1021,60 +1245,73 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشطة");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_blood_type");
 
-                    b.ToTable("BloodType", t =>
+                    b.ToTable("blood_type", null, t =>
                         {
                             t.HasComment("فصائل الدم");
                         });
@@ -1085,6 +1322,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف المبنى");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -1093,67 +1331,82 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
+                        .HasColumnName("code")
                         .HasComment("رمز المبنى");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<string>("Description")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)")
+                        .HasColumnName("description")
                         .HasComment("وصف المبنى");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("name_ar")
                         .HasComment("اسم المبنى بالعربية");
 
                     b.Property<string>("NameEn")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("name_en")
                         .HasComment("اسم المبنى بالإنجليزية");
 
                     b.Property<int>("UniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("university_id")
                         .HasComment("معرّف الجامعة");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_building");
 
                     b.HasIndex("UniversityId", "Code")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_building_university_id_code");
 
-                    b.ToTable("Building", t =>
+                    b.ToTable("building", null, t =>
                         {
                             t.HasComment("جدول المباني");
                         });
@@ -1164,74 +1417,90 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف السرية");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("BattalionId")
                         .HasColumnType("integer")
+                        .HasColumnName("battalion_id")
                         .HasComment("معرّف الكتيبة");
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
+                        .HasColumnName("code")
                         .HasComment("رمز السرية");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<string>("Description")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)")
+                        .HasColumnName("description")
                         .HasComment("وصف السرية");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("name_ar")
                         .HasComment("اسم السرية بالعربية");
 
                     b.Property<string>("NameEn")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("name_en")
                         .HasComment("اسم السرية بالإنجليزية");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_company");
 
-                    b.HasIndex("BattalionId");
+                    b.HasIndex("BattalionId")
+                        .HasDatabaseName("ix_company_battalion_id");
 
-                    b.ToTable("Company", t =>
+                    b.ToTable("company", null, t =>
                         {
                             t.HasComment("جدول السرايا العسكرية");
                         });
@@ -1242,6 +1511,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف المقرر");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -1250,103 +1520,128 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
+                        .HasColumnName("code")
                         .HasComment("رمز المقرر");
 
                     b.Property<int>("CourseCategoryId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("course_category_id");
 
                     b.Property<int?>("CourseTypeId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("course_type_id");
 
                     b.Property<decimal?>("CreditHours")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("numeric")
-                        .HasDefaultValue(0m);
+                        .HasDefaultValue(0m)
+                        .HasColumnName("credit_hours");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<string>("Description")
                         .HasColumnType("text")
+                        .HasColumnName("description")
                         .HasComment("وصف المقرر");
 
                     b.Property<int?>("GradeScaleId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("grade_scale_id");
 
                     b.Property<bool>("IncludeInGpa")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(true)
+                        .HasColumnName("include_in_gpa")
                         .HasComment("يحسب في المعدل - يتم تضمينه في حساب تقدير الطالب");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<bool?>("IsGraduationRequired")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasDefaultValue(false);
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_graduation_required");
 
                     b.Property<bool?>("IsYearFail")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasDefaultValue(false);
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_year_fail");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<decimal?>("MaximumDegree")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("numeric")
                         .HasDefaultValue(0m)
+                        .HasColumnName("maximum_degree")
                         .HasComment("النهاية العظمى للدرجة");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("title")
                         .HasComment("اسم المقرر");
 
                     b.Property<int>("UniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("university_id")
                         .HasComment("معرّف الجامعة");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_course");
 
-                    b.HasIndex("CourseCategoryId");
+                    b.HasIndex("CourseCategoryId")
+                        .HasDatabaseName("ix_course_course_category_id");
 
-                    b.HasIndex("CourseTypeId");
+                    b.HasIndex("CourseTypeId")
+                        .HasDatabaseName("ix_course_course_type_id");
 
-                    b.HasIndex("GradeScaleId");
+                    b.HasIndex("GradeScaleId")
+                        .HasDatabaseName("ix_course_grade_scale_id");
 
                     b.HasIndex("UniversityId", "Code")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_course_university_id_code");
 
-                    b.ToTable("Course", t =>
+                    b.ToTable("course", null, t =>
                         {
                             t.HasComment("جدول المقررات الدراسية");
                         });
@@ -1357,6 +1652,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف المقرر");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -1365,57 +1661,70 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)")
+                        .HasColumnName("code")
                         .HasComment("رمز المقرر");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("title")
                         .HasComment("اسم المقرر");
 
                     b.Property<int>("UniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("university_id")
                         .HasComment("معرّف الجامعة");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_course_category");
 
                     b.HasIndex("UniversityId", "Code")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_course_category_university_id_code");
 
-                    b.ToTable("CourseCategory", t =>
+                    b.ToTable("course_category", null, t =>
                         {
                             t.HasComment("جدول المقررات الدراسية");
                         });
@@ -1425,107 +1734,134 @@ namespace StartBack.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CourseId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("course_id");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<int>("LookupCourseDegreeDevisionId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("lookup_course_degree_devision_id");
 
                     b.Property<decimal?>("Percentage")
-                        .HasColumnType("numeric");
+                        .HasColumnType("numeric")
+                        .HasColumnName("percentage");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_course_degree_devision_course");
 
-                    b.HasIndex("CourseId");
+                    b.HasIndex("CourseId")
+                        .HasDatabaseName("ix_course_degree_devision_course_course_id");
 
-                    b.HasIndex("LookupCourseDegreeDevisionId");
+                    b.HasIndex("LookupCourseDegreeDevisionId")
+                        .HasDatabaseName("ix_course_degree_devision_course_lookup_course_degree_devision");
 
-                    b.ToTable("CourseDegreeDevisionCourse");
+                    b.ToTable("course_degree_devision_course", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.Tables.CourseInstructor", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CourseId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("course_id");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<int>("PersonUniversityId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("person_university_id");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_course_instructor");
 
-                    b.HasIndex("CourseId");
+                    b.HasIndex("CourseId")
+                        .HasDatabaseName("ix_course_instructor_course_id");
 
-                    b.HasIndex("PersonUniversityId");
+                    b.HasIndex("PersonUniversityId")
+                        .HasDatabaseName("ix_course_instructor_person_university_id");
 
-                    b.ToTable("CourseInstructor");
+                    b.ToTable("course_instructor", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.Tables.CoursePrerequisite", b =>
@@ -1533,67 +1869,83 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف السجل");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CourseId")
                         .HasColumnType("integer")
+                        .HasColumnName("course_id")
                         .HasComment("معرّف المقرر");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<bool>("IsMandatory")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_mandatory")
                         .HasComment("هل المتطلب إجباري");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("MinGrade")
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
+                        .HasColumnName("min_grade")
                         .HasComment("الحد الأدنى للتقدير المطلوب");
 
                     b.Property<string>("Notes")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("notes");
 
                     b.Property<int>("PrerequisiteCourseId")
                         .HasColumnType("integer")
+                        .HasColumnName("prerequisite_course_id")
                         .HasComment("معرّف المقرر السابق المطلوب");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_course_prerequisite");
 
-                    b.HasIndex("PrerequisiteCourseId");
+                    b.HasIndex("PrerequisiteCourseId")
+                        .HasDatabaseName("ix_course_prerequisite_prerequisite_course_id");
 
                     b.HasIndex("CourseId", "PrerequisiteCourseId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_course_prerequisite_course_id_prerequisite_course_id");
 
-                    b.ToTable("CoursePrerequisite", t =>
+                    b.ToTable("course_prerequisite", null, t =>
                         {
                             t.HasComment("جدول المتطلبات السابقة للمقررات");
                         });
@@ -1604,6 +1956,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الموعد");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -1611,72 +1964,91 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<string>("CancelReason")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("cancel_reason")
                         .HasComment("سبب الإلغاء");
 
                     b.Property<int?>("CourseInstructorId")
                         .HasColumnType("integer")
+                        .HasColumnName("course_instructor_id")
                         .HasComment("معرّف مدرب المقرر");
 
                     b.Property<int>("CourseSemesterSectionId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("course_semester_section_id");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<int>("HallId")
                         .HasColumnType("integer")
+                        .HasColumnName("hall_id")
                         .HasComment("معرّف القاعة");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsCancelled")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_cancelled")
                         .HasComment("هل المحاضرة ملغية");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<DateOnly>("MeetingDate")
                         .HasColumnType("date")
+                        .HasColumnName("meeting_date")
                         .HasComment("تاريخ المحاضرة");
 
                     b.Property<int>("PeriodId")
                         .HasColumnType("integer")
+                        .HasColumnName("period_id")
                         .HasComment("معرّف الفترة الزمنية");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_course_section_meeting");
 
-                    b.HasIndex("CourseInstructorId");
+                    b.HasIndex("CourseInstructorId")
+                        .HasDatabaseName("ix_course_section_meeting_course_instructor_id");
 
-                    b.HasIndex("HallId");
+                    b.HasIndex("HallId")
+                        .HasDatabaseName("ix_course_section_meeting_hall_id");
 
-                    b.HasIndex("PeriodId");
+                    b.HasIndex("PeriodId")
+                        .HasDatabaseName("ix_course_section_meeting_period_id");
 
                     b.HasIndex("CourseSemesterSectionId", "MeetingDate", "PeriodId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_course_section_meeting_course_semester_section_id_meeting_d");
 
-                    b.ToTable("CourseSectionMeeting", t =>
+                    b.ToTable("course_section_meeting", null, t =>
                         {
                             t.HasComment("جدول مواعيد انعقاد المحاضرات الفعلية");
                         });
@@ -1686,58 +2058,74 @@ namespace StartBack.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AcademicLevelIterationId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("academic_level_iteration_id");
 
                     b.Property<int>("CourseId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("course_id");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<int>("SemesterId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("semester_id");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_course_semesters");
 
-                    b.HasIndex("AcademicLevelIterationId");
+                    b.HasIndex("AcademicLevelIterationId")
+                        .HasDatabaseName("ix_course_semesters_academic_level_iteration_id");
 
-                    b.HasIndex("CourseId");
+                    b.HasIndex("CourseId")
+                        .HasDatabaseName("ix_course_semesters_course_id");
 
-                    b.HasIndex("SemesterId");
+                    b.HasIndex("SemesterId")
+                        .HasDatabaseName("ix_course_semesters_semester_id");
 
                     b.ToTable("course_semesters", (string)null);
                 });
@@ -1746,52 +2134,65 @@ namespace StartBack.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CourseSemesterId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("course_semester_id");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<int>("SectionId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("section_id");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_course_semester_section");
 
-                    b.HasIndex("CourseSemesterId");
+                    b.HasIndex("CourseSemesterId")
+                        .HasDatabaseName("ix_course_semester_section_course_semester_id");
 
-                    b.HasIndex("SectionId");
+                    b.HasIndex("SectionId")
+                        .HasDatabaseName("ix_course_semester_section_section_id");
 
-                    b.ToTable("CourseSemesterSection");
+                    b.ToTable("course_semester_section", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.Tables.CourseType", b =>
@@ -1799,52 +2200,63 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف نوع المقرر");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name")
                         .HasComment("الاسم");
 
                     b.Property<bool>("ShowInCalendar")
                         .HasColumnType("boolean")
+                        .HasColumnName("show_in_calendar")
                         .HasComment("عرض في التقويم");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_course_type");
 
-                    b.ToTable("CourseType", t =>
+                    b.ToTable("course_type", null, t =>
                         {
                             t.HasComment("جدول أنواع المقررات");
                         });
@@ -1878,98 +2290,123 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الإجراء");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateOnly>("ActionDate")
                         .HasColumnType("date")
+                        .HasColumnName("action_date")
                         .HasComment("تاريخ الإجراء");
 
                     b.Property<int>("ActionTypeId")
                         .HasColumnType("integer")
+                        .HasColumnName("action_type_id")
                         .HasComment("معرّف نوع الإجراء");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<string>("Description")
                         .HasColumnType("text")
+                        .HasColumnName("description")
                         .HasComment("وصف الإجراء");
 
                     b.Property<int?>("DurationDays")
                         .HasColumnType("integer")
+                        .HasColumnName("duration_days")
                         .HasComment("المدة بالأيام");
 
                     b.Property<DateOnly?>("EndDate")
                         .HasColumnType("date")
+                        .HasColumnName("end_date")
                         .HasComment("تاريخ الانتهاء");
 
                     b.Property<int>("IncidentId")
                         .HasColumnType("integer")
+                        .HasColumnName("incident_id")
                         .HasComment("معرّف الحادثة");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<int?>("IssuedByPersonUniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("issued_by_person_university_id")
                         .HasComment("صدر بواسطة (علاقة الموظف بالجامعة)");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<DateOnly?>("NotificationDate")
                         .HasColumnType("date")
+                        .HasColumnName("notification_date")
                         .HasComment("تاريخ الإشعار");
 
                     b.Property<bool>("ParentNotified")
                         .HasColumnType("boolean")
+                        .HasColumnName("parent_notified")
                         .HasComment("تم إشعار ولي الأمر");
 
                     b.Property<int>("PersonUniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("person_university_id")
                         .HasComment("معرّف علاقة الطالب بالجامعة");
 
                     b.Property<DateOnly?>("StartDate")
                         .HasColumnType("date")
+                        .HasColumnName("start_date")
                         .HasComment("تاريخ البدء");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer")
+                        .HasColumnName("status")
                         .HasComment("الحالة");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_discipline_action");
 
-                    b.HasIndex("ActionTypeId");
+                    b.HasIndex("ActionTypeId")
+                        .HasDatabaseName("ix_discipline_action_action_type_id");
 
-                    b.HasIndex("IncidentId");
+                    b.HasIndex("IncidentId")
+                        .HasDatabaseName("ix_discipline_action_incident_id");
 
-                    b.HasIndex("IssuedByPersonUniversityId");
+                    b.HasIndex("IssuedByPersonUniversityId")
+                        .HasDatabaseName("ix_discipline_action_issued_by_person_university_id");
 
-                    b.HasIndex("PersonUniversityId");
+                    b.HasIndex("PersonUniversityId")
+                        .HasDatabaseName("ix_discipline_action_person_university_id");
 
-                    b.ToTable("DisciplineAction", t =>
+                    b.ToTable("discipline_action", null, t =>
                         {
                             t.HasComment("جدول الإجراءات التأديبية");
                         });
@@ -1980,104 +2417,130 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الحادثة");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AcademicYearId")
                         .HasColumnType("integer")
+                        .HasColumnName("academic_year_id")
                         .HasComment("معرّف السنة الدراسية");
 
                     b.Property<int?>("AssignedToId")
                         .HasColumnType("integer")
+                        .HasColumnName("assigned_to_id")
                         .HasComment("المسند إليه");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<string>("Description")
                         .HasColumnType("text")
+                        .HasColumnName("description")
                         .HasComment("وصف الحادثة");
 
                     b.Property<string>("IncidentCode")
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)")
+                        .HasColumnName("incident_code")
                         .HasComment("رمز الحادثة");
 
                     b.Property<DateOnly>("IncidentDate")
                         .HasColumnType("date")
+                        .HasColumnName("incident_date")
                         .HasComment("تاريخ الحادثة");
 
                     b.Property<TimeOnly?>("IncidentTime")
                         .HasColumnType("time without time zone")
+                        .HasColumnName("incident_time")
                         .HasComment("وقت الحادثة");
 
                     b.Property<int?>("IncidentTypeId")
                         .HasColumnType("integer")
+                        .HasColumnName("incident_type_id")
                         .HasComment("معرّف نوع الحادثة");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("Location")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("location")
                         .HasComment("المكان");
 
                     b.Property<int?>("ReporterPersonUniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("reporter_person_university_id")
                         .HasComment("المبلغ (علاقة الموظف بالجامعة)");
 
                     b.Property<string>("Resolution")
                         .HasColumnType("text")
+                        .HasColumnName("resolution")
                         .HasComment("القرار");
 
                     b.Property<DateTime?>("ResolvedAt")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("resolved_at")
                         .HasComment("تاريخ الحل");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer")
+                        .HasColumnName("status")
                         .HasComment("الحالة");
 
                     b.Property<int>("UniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("university_id")
                         .HasComment("معرّف الجامعة");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_discipline_incident");
 
-                    b.HasIndex("AcademicYearId");
+                    b.HasIndex("AcademicYearId")
+                        .HasDatabaseName("ix_discipline_incident_academic_year_id");
 
-                    b.HasIndex("IncidentTypeId");
+                    b.HasIndex("IncidentTypeId")
+                        .HasDatabaseName("ix_discipline_incident_incident_type_id");
 
-                    b.HasIndex("ReporterPersonUniversityId");
+                    b.HasIndex("ReporterPersonUniversityId")
+                        .HasDatabaseName("ix_discipline_incident_reporter_person_university_id");
 
-                    b.HasIndex("UniversityId");
+                    b.HasIndex("UniversityId")
+                        .HasDatabaseName("ix_discipline_incident_university_id");
 
-                    b.ToTable("DisciplineIncident", t =>
+                    b.ToTable("discipline_incident", null, t =>
                         {
                             t.HasComment("جدول حوادث السلوك والانضباط");
                         });
@@ -2088,63 +2551,78 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف السجل");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<int>("IncidentId")
                         .HasColumnType("integer")
+                        .HasColumnName("incident_id")
                         .HasComment("معرّف الحادثة");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("Notes")
                         .HasColumnType("text")
+                        .HasColumnName("notes")
                         .HasComment("ملاحظات");
 
                     b.Property<int>("PersonUniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("person_university_id")
                         .HasComment("معرّف علاقة الطالب بالجامعة");
 
                     b.Property<int>("Role")
                         .HasColumnType("integer")
+                        .HasColumnName("role")
                         .HasComment("دور الطالب");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_discipline_incident_student");
 
-                    b.HasIndex("PersonUniversityId");
+                    b.HasIndex("PersonUniversityId")
+                        .HasDatabaseName("ix_discipline_incident_student_person_university_id");
 
                     b.HasIndex("IncidentId", "PersonUniversityId", "Role")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_discipline_incident_student_incident_id_person_university_i");
 
-                    b.ToTable("DisciplineIncidentStudent", t =>
+                    b.ToTable("discipline_incident_student", null, t =>
                         {
                             t.HasComment("جدول الطلاب المشاركين في حوادث السلوك");
                         });
@@ -2155,79 +2633,100 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف السجل");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CourseSemesterId")
                         .HasColumnType("integer")
+                        .HasColumnName("course_semester_id")
                         .HasComment("معرّف حصة المقرر");
 
                     b.Property<decimal?>("Degree")
-                        .HasColumnType("numeric");
+                        .HasColumnType("numeric")
+                        .HasColumnName("degree");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<decimal?>("GpaValue")
                         .HasColumnType("numeric")
+                        .HasColumnName("gpa_value")
                         .HasComment("قيمة المعدل");
 
                     b.Property<decimal?>("GradePercent")
                         .HasColumnType("numeric")
+                        .HasColumnName("grade_percent")
                         .HasComment("النسبة المئوية");
 
                     b.Property<int?>("GradeScaleItemId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("grade_scale_item_id");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("LetterGrade")
                         .HasColumnType("text")
+                        .HasColumnName("letter_grade")
                         .HasComment("التقدير");
 
                     b.Property<int>("SemesterId")
                         .HasColumnType("integer")
+                        .HasColumnName("semester_id")
                         .HasComment("معرّف الفصل الدراسي");
 
                     b.Property<int>("StudentCourseEnrollmentId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("student_course_enrollment_id");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_final_grade");
 
-                    b.HasIndex("CourseSemesterId");
+                    b.HasIndex("CourseSemesterId")
+                        .HasDatabaseName("ix_final_grade_course_semester_id");
 
-                    b.HasIndex("GradeScaleItemId");
+                    b.HasIndex("GradeScaleItemId")
+                        .HasDatabaseName("ix_final_grade_grade_scale_item_id");
 
-                    b.HasIndex("SemesterId");
+                    b.HasIndex("SemesterId")
+                        .HasDatabaseName("ix_final_grade_semester_id");
 
-                    b.HasIndex("StudentCourseEnrollmentId");
+                    b.HasIndex("StudentCourseEnrollmentId")
+                        .HasDatabaseName("ix_final_grade_student_course_enrollment_id");
 
-                    b.ToTable("FinalGrade", t =>
+                    b.ToTable("final_grade", null, t =>
                         {
                             t.HasComment("جدول الدرجات النهائية للمقررات");
                         });
@@ -2238,74 +2737,90 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الطابق");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("BuildingId")
                         .HasColumnType("integer")
+                        .HasColumnName("building_id")
                         .HasComment("معرّف المبنى");
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
+                        .HasColumnName("code")
                         .HasComment("رمز الطابق");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<string>("Description")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)")
+                        .HasColumnName("description")
                         .HasComment("وصف الطابق");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("name_ar")
                         .HasComment("اسم الطابق بالعربية");
 
                     b.Property<string>("NameEn")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("name_en")
                         .HasComment("اسم الطابق بالإنجليزية");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_floor");
 
-                    b.HasIndex("BuildingId");
+                    b.HasIndex("BuildingId")
+                        .HasDatabaseName("ix_floor_building_id");
 
-                    b.ToTable("Floor", t =>
+                    b.ToTable("floor", null, t =>
                         {
                             t.HasComment("جدول الطوابق");
                         });
@@ -2316,70 +2831,87 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف المقياس");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AcademicYearId")
                         .HasColumnType("integer")
+                        .HasColumnName("academic_year_id")
                         .HasComment("معرّف السنة الدراسية");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<string>("Description")
                         .HasColumnType("text")
+                        .HasColumnName("description")
                         .HasComment("وصف المقياس");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDefault")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_default")
                         .HasComment("هل المقياس الافتراضي");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text")
+                        .HasColumnName("title")
                         .HasComment("اسم المقياس");
 
                     b.Property<int>("Type")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("type");
 
                     b.Property<int>("UniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("university_id")
                         .HasComment("معرّف الجامعة");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_grade_scale");
 
-                    b.HasIndex("AcademicYearId");
+                    b.HasIndex("AcademicYearId")
+                        .HasDatabaseName("ix_grade_scale_academic_year_id");
 
-                    b.HasIndex("UniversityId");
+                    b.HasIndex("UniversityId")
+                        .HasDatabaseName("ix_grade_scale_university_id");
 
-                    b.ToTable("GradeScale", t =>
+                    b.ToTable("grade_scale", null, t =>
                         {
                             t.HasComment("جدول مقاييس الدرجات");
                         });
@@ -2390,61 +2922,75 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الرمز");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<int>("GradeScaleId")
                         .HasColumnType("integer")
+                        .HasColumnName("grade_scale_id")
                         .HasComment("معرّف المقياس");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<decimal>("MaxPercent")
                         .HasColumnType("numeric")
+                        .HasColumnName("max_percent")
                         .HasComment("الحد الأقصى للنسبة");
 
                     b.Property<decimal>("MinPercent")
                         .HasColumnType("numeric")
+                        .HasColumnName("min_percent")
                         .HasComment("الحد الأدنى للنسبة");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text")
+                        .HasColumnName("title")
                         .HasComment("رمز التقدير");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_grade_scale_item");
 
-                    b.HasIndex("GradeScaleId");
+                    b.HasIndex("GradeScaleId")
+                        .HasDatabaseName("ix_grade_scale_item_grade_scale_id");
 
-                    b.ToTable("GradeScaleItem", t =>
+                    b.ToTable("grade_scale_item", null, t =>
                         {
                             t.HasComment("جدول رموز التقديرات");
                         });
@@ -2455,101 +3001,122 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف ولي الأمر");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
                         .HasColumnType("text")
+                        .HasColumnName("address")
                         .HasComment("العنوان");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<string>("Email")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("email")
                         .HasComment("البريد الإلكتروني");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("first_name")
                         .HasComment("الاسم الأول");
 
                     b.Property<int?>("Gender")
                         .HasColumnType("integer")
+                        .HasColumnName("gender")
                         .HasComment("الجنس");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("last_name")
                         .HasComment("اسم العائلة");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("MiddleName")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("middle_name")
                         .HasComment("الاسم الأوسط");
 
                     b.Property<string>("Mobile")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
+                        .HasColumnName("mobile")
                         .HasComment("رقم الجوال");
 
                     b.Property<string>("Occupation")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("occupation")
                         .HasComment("المهنة");
 
                     b.Property<string>("Phone")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
+                        .HasColumnName("phone")
                         .HasComment("رقم الهاتف");
 
                     b.Property<string>("Title")
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
+                        .HasColumnName("title")
                         .HasComment("اللقب");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
                     b.Property<string>("Workplace")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("workplace")
                         .HasComment("مكان العمل");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_guardian");
 
-                    b.ToTable("Guardian", t =>
+                    b.ToTable("guardian", null, t =>
                         {
                             t.HasComment("جدول أولياء الأمور");
                         });
@@ -2560,67 +3127,82 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف القاعة");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("Capacity")
                         .HasColumnType("integer")
+                        .HasColumnName("capacity")
                         .HasComment("السعة");
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)")
+                        .HasColumnName("code")
                         .HasComment("رمز القاعة");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشطة");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("title")
                         .HasComment("اسم القاعة");
 
                     b.Property<int>("UniversityId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("university_id");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_hall");
 
-                    b.HasIndex("UniversityId");
+                    b.HasIndex("UniversityId")
+                        .HasDatabaseName("ix_hall_university_id");
 
-                    b.ToTable("Hall", t =>
+                    b.ToTable("hall", null, t =>
                         {
                             t.HasComment("جدول القاعات والغرف");
                         });
@@ -2630,115 +3212,141 @@ namespace StartBack.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("name");
 
                     b.Property<int?>("UniversityId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("university_id");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_job");
 
-                    b.HasIndex("UniversityId");
+                    b.HasIndex("UniversityId")
+                        .HasDatabaseName("ix_job_university_id");
 
-                    b.ToTable("Job");
+                    b.ToTable("job", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.Tables.LookupAddressType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("code");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en");
 
                     b.Property<int>("SortOrder")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("sort_order");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_address_type");
 
-                    b.ToTable("LookupAddressType", t =>
+                    b.ToTable("lookup_address_type", null, t =>
                         {
                             t.HasComment("جدول أنواع العناوين");
                         });
@@ -2781,6 +3389,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف نوع المرفق");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -2789,60 +3398,73 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_attachment_type");
 
-                    b.ToTable("LookupAttachmentType", t =>
+                    b.ToTable("lookup_attachment_type", null, t =>
                         {
                             t.HasComment("جدول أنواع المرفقات");
                         });
@@ -2853,6 +3475,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الكود");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -2861,82 +3484,101 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<string>("ColorCode")
                         .HasMaxLength(10)
-                        .HasColumnType("character varying(10)");
+                        .HasColumnType("character varying(10)")
+                        .HasColumnName("color_code");
 
                     b.Property<decimal>("DeductionPoints")
-                        .HasColumnType("numeric");
+                        .HasColumnType("numeric")
+                        .HasColumnName("deduction_points");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDefault")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_default");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<bool>("IsPresence")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_presence")
                         .HasComment("هل يعتبر حضور");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<string>("ShortName")
                         .HasMaxLength(10)
-                        .HasColumnType("character varying(10)");
+                        .HasColumnType("character varying(10)")
+                        .HasColumnName("short_name");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer")
+                        .HasColumnName("type")
                         .HasComment("نوع الحضور");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_attendance_code");
 
-                    b.ToTable("LookupAttendanceCode", t =>
+                    b.ToTable("lookup_attendance_code", null, t =>
                         {
                             t.HasComment("جدول أكواد الحضور");
                         });
@@ -3029,6 +3671,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الدفعة");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -3037,60 +3680,73 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشطة");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_batch");
 
-                    b.ToTable("LookupBatch", t =>
+                    b.ToTable("lookup_batch", null, t =>
                         {
                             t.HasComment("جدول الدفعات");
                         });
@@ -3101,6 +3757,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الكلية");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -3109,60 +3766,73 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشطة");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_college");
 
-                    b.ToTable("LookupCollege", t =>
+                    b.ToTable("lookup_college", null, t =>
                         {
                             t.HasComment("جدول الكليات");
                         });
@@ -3173,6 +3843,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الكلية");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -3181,60 +3852,73 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشطة");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_course_degree_devision");
 
-                    b.ToTable("LookupCourseDegreeDevision", t =>
+                    b.ToTable("lookup_course_degree_devision", null, t =>
                         {
                             t.HasComment("جدول الكليات");
                         });
@@ -3245,6 +3929,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف النوع");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -3253,64 +3938,78 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<int>("SeverityLevel")
                         .HasColumnType("integer")
+                        .HasColumnName("severity_level")
                         .HasComment("الخطورة (1-5)");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_discipline_action_type");
 
-                    b.ToTable("LookupDisciplineActionType", t =>
+                    b.ToTable("lookup_discipline_action_type", null, t =>
                         {
                             t.HasComment("جدول أنواع الإجراءات التأديبية");
                         });
@@ -3389,6 +4088,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الحي/المنطقة");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -3397,66 +4097,81 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<int>("GovernateId")
                         .HasColumnType("integer")
+                        .HasColumnName("governate_id")
                         .HasComment("معرّف المحافظة");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_district");
 
-                    b.HasIndex("GovernateId");
+                    b.HasIndex("GovernateId")
+                        .HasDatabaseName("ix_lookup_district_governate_id");
 
-                    b.ToTable("LookupDistrict", t =>
+                    b.ToTable("lookup_district", null, t =>
                         {
                             t.HasComment("جدول الأحياء/المناطق");
                         });
@@ -3467,6 +4182,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الكود");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -3474,54 +4190,66 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("text")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasColumnType("text")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasColumnType("text")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_enrollment_code");
 
-                    b.ToTable("LookupEnrollmentCode", t =>
+                    b.ToTable("lookup_enrollment_code", null, t =>
                         {
                             t.HasComment("جدول أكواد القيد (دخول/خروج)");
                         });
@@ -3552,6 +4280,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف العرق");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -3560,60 +4289,73 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشطة");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_ethnicity");
 
-                    b.ToTable("LookupEthnicity", t =>
+                    b.ToTable("lookup_ethnicity", null, t =>
                         {
                             t.HasComment("جدول الأعراق");
                         });
@@ -3676,6 +4418,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("المعرف الأساسي");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -3684,67 +4427,82 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)")
+                        .HasColumnName("code")
                         .HasComment("كود المرحلة السنية (فريد)");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(true)
+                        .HasColumnName("is_active")
                         .HasComment("هل المرحلة السنية مفعلة");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<short>("MaxAge")
                         .HasColumnType("smallint")
+                        .HasColumnName("max_age")
                         .HasComment("العمر الأقصى للمرحلة السنية");
 
                     b.Property<short>("MinAge")
                         .HasColumnType("smallint")
+                        .HasColumnName("min_age")
                         .HasComment("العمر الأدنى للمرحلة السنية");
 
                     b.Property<int?>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("TitleAr")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("title_ar")
                         .HasComment("اسم المرحلة السنية بالعربية");
 
                     b.Property<string>("TitleEn")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("title_en")
                         .HasComment("اسم المرحلة السنية بالإنجليزية");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_fitness_age_stages");
 
                     b.HasIndex("Code")
                         .IsUnique()
@@ -3765,6 +4523,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("المعرف الأساسي");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -3773,65 +4532,79 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)")
+                        .HasColumnName("code")
                         .HasComment("كود التمرين (فريد داخل نفس سطر تقسيم الدرجات)");
 
                     b.Property<int>("DegreeDivisionId")
                         .HasColumnType("integer")
+                        .HasColumnName("degree_division_id")
                         .HasComment("معرف سطر تقسيم الدرجات (اختبار اللياقة) من جدول degree-divisions");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<string>("Description")
                         .HasColumnType("text")
+                        .HasColumnName("description")
                         .HasComment("وصف إضافي للتمرين");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(true)
+                        .HasColumnName("is_active")
                         .HasComment("هل التمرين مفعل");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<decimal?>("MaxDegree")
                         .HasPrecision(6, 2)
                         .HasColumnType("numeric(6,2)")
+                        .HasColumnName("max_degree")
                         .HasComment("الدرجة القصوى للتمرين");
 
                     b.Property<int?>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("TitleAr")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("title_ar")
                         .HasComment("اسم التمرين بالعربية");
 
                     b.Property<string>("TitleEn")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("title_en")
                         .HasComment("اسم التمرين بالإنجليزية");
 
                     b.Property<string>("UnitNameAr")
@@ -3840,18 +4613,22 @@ namespace StartBack.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
                         .HasDefaultValue("عدة")
+                        .HasColumnName("unit_name_ar")
                         .HasComment("وحدة القياس بالعربية (مثال: عدة/ثانية/متر)");
 
                     b.Property<string>("UnitNameEn")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
+                        .HasColumnName("unit_name_en")
                         .HasComment("وحدة القياس بالإنجليزية");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_fitness_exercises");
 
                     b.HasIndex("DegreeDivisionId")
                         .HasDatabaseName("ix_lookup_fitness_exercises_degree_division");
@@ -3873,76 +4650,93 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("المعرف الأساسي");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AcademicYearId")
                         .HasColumnType("integer")
+                        .HasColumnName("academic_year_id")
                         .HasComment("معرف العام الأكاديمي");
 
                     b.Property<int>("AgeStageId")
                         .HasColumnType("integer")
+                        .HasColumnName("age_stage_id")
                         .HasComment("معرف المرحلة السنية");
 
                     b.Property<decimal>("DegreeValue")
                         .HasPrecision(6, 2)
                         .HasColumnType("numeric(6,2)")
+                        .HasColumnName("degree_value")
                         .HasComment("الدرجة أو عدد العدات المقابل للتقييم");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<int>("ExerciseId")
                         .HasColumnType("integer")
+                        .HasColumnName("exercise_id")
                         .HasComment("معرف التمرين");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(true)
+                        .HasColumnName("is_active")
                         .HasComment("هل التقييم مفعل");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<decimal>("PercentageValue")
                         .HasPrecision(5, 2)
                         .HasColumnType("numeric(5,2)")
+                        .HasColumnName("percentage_value")
                         .HasComment("النسبة المئوية المقابلة للدرجة");
 
                     b.Property<int?>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض داخل التمرين");
 
                     b.Property<int>("UniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("university_id")
                         .HasComment("معرف الجامعة");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_fitness_exercise_evaluations");
 
                     b.HasIndex("AcademicYearId")
                         .HasDatabaseName("ix_lookup_fitness_exercise_eval_academic_year");
@@ -3975,6 +4769,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف المحافظة");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -3983,60 +4778,73 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشطة");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_governate");
 
-                    b.ToTable("LookupGovernate", t =>
+                    b.ToTable("lookup_governate", null, t =>
                         {
                             t.HasComment("جدول المحافظات");
                         });
@@ -4047,6 +4855,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف النوع");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -4055,64 +4864,78 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<int>("SeverityLevel")
                         .HasColumnType("integer")
+                        .HasColumnName("severity_level")
                         .HasComment("الخطورة (1-5)");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_incident_type");
 
-                    b.ToTable("LookupIncidentType", t =>
+                    b.ToTable("lookup_incident_type", null, t =>
                         {
                             t.HasComment("جدول أنواع حوادث السلوك");
                         });
@@ -4190,63 +5013,77 @@ namespace StartBack.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(10)
-                        .HasColumnType("character varying(10)");
+                        .HasColumnType("character varying(10)")
+                        .HasColumnName("code");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en");
 
                     b.Property<int>("SortOrder")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("sort_order");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_language");
 
-                    b.ToTable("LookupLanguage", t =>
+                    b.ToTable("lookup_language", null, t =>
                         {
                             t.HasComment("جدول اللغات");
                         });
@@ -4289,6 +5126,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف النوع");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -4297,60 +5135,73 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_marking_period_type");
 
-                    b.ToTable("LookupMarkingPeriodType", t =>
+                    b.ToTable("lookup_marking_period_type", null, t =>
                         {
                             t.HasComment("جدول أنواع فترات الرصد");
                         });
@@ -4403,6 +5254,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الرتبة العسكرية");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -4411,62 +5263,75 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(true)
+                        .HasColumnName("is_active")
                         .HasComment("هل نشطة");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_military_rank");
 
-                    b.ToTable("LookupMilitaryRank", t =>
+                    b.ToTable("lookup_military_rank", null, t =>
                         {
                             t.HasComment("جدول الرتب العسكرية");
                         });
@@ -4659,6 +5524,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الجنسية");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -4667,65 +5533,79 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<string>("CountryCode")
                         .HasMaxLength(3)
                         .HasColumnType("character varying(3)")
+                        .HasColumnName("country_code")
                         .HasComment("رمز الدولة");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشطة");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_nationality");
 
-                    b.ToTable("LookupNationality", t =>
+                    b.ToTable("lookup_nationality", null, t =>
                         {
                             t.HasComment("جدول الجنسيات");
                         });
@@ -4804,6 +5684,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف النوع");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -4812,60 +5693,73 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_phone_type");
 
-                    b.ToTable("LookupPhoneType", t =>
+                    b.ToTable("lookup_phone_type", null, t =>
                         {
                             t.HasComment("جدول أنواع الهواتف");
                         });
@@ -4918,6 +5812,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف المؤهل");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -4926,60 +5821,73 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_qualification");
 
-                    b.ToTable("LookupQualification", t =>
+                    b.ToTable("lookup_qualification", null, t =>
                         {
                             t.HasComment("جدول المؤهلات العلمية");
                         });
@@ -4990,6 +5898,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الحالة");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -4998,65 +5907,79 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<string>("Description")
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)")
+                        .HasColumnName("description")
                         .HasComment("الوصف");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_record_status");
 
-                    b.ToTable("LookupRecordStatus", t =>
+                    b.ToTable("lookup_record_status", null, t =>
                         {
                             t.HasComment("جدول حالات السجلات العامة");
                         });
@@ -5112,63 +6035,77 @@ namespace StartBack.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("code");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en");
 
                     b.Property<int>("SortOrder")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("sort_order");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_relationship_type");
 
-                    b.ToTable("LookupRelationshipType", t =>
+                    b.ToTable("lookup_relationship_type", null, t =>
                         {
                             t.HasComment("جدول أنواع العلاقات (ولي الأمر)");
                         });
@@ -5241,6 +6178,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الدين");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -5249,60 +6187,73 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_religion");
 
-                    b.ToTable("LookupReligion", t =>
+                    b.ToTable("lookup_religion", null, t =>
                         {
                             t.HasComment("جدول الأديان");
                         });
@@ -5313,6 +6264,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الفئة");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -5321,64 +6273,78 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsAcademic")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_academic")
                         .HasComment("هل هيئة تدريس");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_staff_category");
 
-                    b.ToTable("LookupStaffCategory", t =>
+                    b.ToTable("lookup_staff_category", null, t =>
                         {
                             t.HasComment("جدول فئات الموظفين");
                         });
@@ -5435,6 +6401,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف النوع");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -5443,60 +6410,73 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_subject_type");
 
-                    b.ToTable("LookupSubjectType", t =>
+                    b.ToTable("lookup_subject_type", null, t =>
                         {
                             t.HasComment("جدول أنواع المواد الدراسية");
                         });
@@ -5549,6 +6529,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف السلاح");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -5557,60 +6538,73 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_weapon");
 
-                    b.ToTable("LookupWeapon", t =>
+                    b.ToTable("lookup_weapon", null, t =>
                         {
                             t.HasComment("جدول الأسلحة");
                         });
@@ -5621,6 +6615,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف اليوم");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -5629,60 +6624,73 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
+                        .HasColumnName("code")
                         .HasComment("الرمز");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
+                        .HasColumnName("name_ar")
                         .HasComment("الاسم بالعربية");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
+                        .HasColumnName("name_en")
                         .HasComment("الاسم بالإنجليزية");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض (الأحد=1)");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_lookup_weekday");
 
-                    b.ToTable("LookupWeekday", t =>
+                    b.ToTable("lookup_weekday", null, t =>
                         {
                             t.HasComment("جدول أيام الأسبوع");
                         });
@@ -5765,84 +6773,103 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الفترة");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<TimeOnly>("EndTime")
                         .HasColumnType("time without time zone")
+                        .HasColumnName("end_time")
                         .HasComment("وقت النهاية");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشطة");
 
                     b.Property<bool>("IsAttendanceRequired")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_attendance_required")
                         .HasComment("الحضور مطلوب");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<int>("LengthMinutes")
                         .HasColumnType("integer")
+                        .HasColumnName("length_minutes")
                         .HasComment("المدة بالدقائق");
 
                     b.Property<int>("PeriodType")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasDefaultValue(1)
+                        .HasColumnName("period_type")
                         .HasComment("نوع الفترة");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<TimeOnly>("StartTime")
                         .HasColumnType("time without time zone")
+                        .HasColumnName("start_time")
                         .HasComment("وقت البداية");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
+                        .HasColumnName("title")
                         .HasComment("اسم الفترة");
 
                     b.Property<int>("UniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("university_id")
                         .HasComment("معرّف الجامعة");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_period");
 
-                    b.HasIndex("UniversityId");
+                    b.HasIndex("UniversityId")
+                        .HasDatabaseName("ix_period_university_id");
 
-                    b.ToTable("Period", t =>
+                    b.ToTable("period", null, t =>
                         {
                             t.HasComment("جدول الفترات الزمنية اليومية");
                         });
@@ -5853,6 +6880,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الشخص");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -5860,41 +6888,50 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<string>("Address")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)")
+                        .HasColumnName("address")
                         .HasComment("العنوان");
 
                     b.Property<int?>("BatchId")
                         .HasColumnType("integer")
+                        .HasColumnName("batch_id")
                         .HasComment("معرّف الدفعة");
 
                     b.Property<DateOnly?>("Birthdate")
                         .HasColumnType("date")
+                        .HasColumnName("birthdate")
                         .HasComment("تاريخ الميلاد");
 
                     b.Property<int?>("BloodTypeId")
                         .HasColumnType("integer")
+                        .HasColumnName("blood_type_id")
                         .HasComment("معرّف فصيلة الدم");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<int?>("DistrictId")
                         .HasColumnType("integer")
+                        .HasColumnName("district_id")
                         .HasComment("معرّف الحي/المنطقة");
 
                     b.Property<string>("Email")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("email")
                         .HasComment("البريد الإلكتروني");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("first_name")
                         .HasComment("الاسم الأول");
 
                     b.Property<string>("FullName")
@@ -5902,109 +6939,136 @@ namespace StartBack.Infrastructure.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasMaxLength(300)
                         .HasColumnType("character varying(300)")
+                        .HasColumnName("full_name")
                         .HasComputedColumnSql("\r\n        (\r\n            \"first_name\" ||\r\n            ' ' ||\r\n            COALESCE(\"middle_name\" || ' ', '') ||\r\n            \"last_name\"\r\n        )\r\n        ", true);
 
                     b.Property<int?>("Gender")
                         .HasColumnType("integer")
+                        .HasColumnName("gender")
                         .HasComment("الجنس");
 
                     b.Property<int?>("GovernateId")
                         .HasColumnType("integer")
+                        .HasColumnName("governate_id")
                         .HasComment("معرّف المحافظة");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<bool>("IsMilitary")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(false)
+                        .HasColumnName("is_military")
                         .HasComment("هل عسكري");
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("last_name")
                         .HasComment("اسم العائلة");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("MiddleName")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("middle_name")
                         .HasComment("الاسم الأوسط");
 
                     b.Property<string>("MilitaryNumber")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
+                        .HasColumnName("military_number")
                         .HasComment("الرقم العسكري");
 
                     b.Property<int?>("MilitaryRankId")
                         .HasColumnType("integer")
+                        .HasColumnName("military_rank_id")
                         .HasComment("معرّف الرتبة العسكرية");
 
                     b.Property<string>("Mobile")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
+                        .HasColumnName("mobile")
                         .HasComment("رقم الجوال");
 
                     b.Property<string>("NationalId")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
+                        .HasColumnName("national_id")
                         .HasComment("الرقم الوطني - فريد");
 
                     b.Property<int?>("NationalityId")
                         .HasColumnType("integer")
+                        .HasColumnName("nationality_id")
                         .HasComment("معرّف الجنسية");
 
                     b.Property<int?>("ReligionId")
                         .HasColumnType("integer")
+                        .HasColumnName("religion_id")
                         .HasComment("معرّف الدين");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
                     b.Property<int?>("WeaponId")
                         .HasColumnType("integer")
+                        .HasColumnName("weapon_id")
                         .HasComment("معرّف السلاح");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_person");
 
-                    b.HasIndex("BatchId");
+                    b.HasIndex("BatchId")
+                        .HasDatabaseName("ix_person_batch_id");
 
-                    b.HasIndex("BloodTypeId");
+                    b.HasIndex("BloodTypeId")
+                        .HasDatabaseName("ix_person_blood_type_id");
 
-                    b.HasIndex("DistrictId");
+                    b.HasIndex("DistrictId")
+                        .HasDatabaseName("ix_person_district_id");
 
-                    b.HasIndex("GovernateId");
+                    b.HasIndex("GovernateId")
+                        .HasDatabaseName("ix_person_governate_id");
 
-                    b.HasIndex("MilitaryRankId");
+                    b.HasIndex("MilitaryRankId")
+                        .HasDatabaseName("ix_person_military_rank_id");
 
                     b.HasIndex("NationalId")
                         .IsUnique()
                         .HasDatabaseName("ix_person_national_id_unique");
 
-                    b.HasIndex("NationalityId");
+                    b.HasIndex("NationalityId")
+                        .HasDatabaseName("ix_person_nationality_id");
 
-                    b.HasIndex("ReligionId");
+                    b.HasIndex("ReligionId")
+                        .HasDatabaseName("ix_person_religion_id");
 
-                    b.HasIndex("WeaponId");
+                    b.HasIndex("WeaponId")
+                        .HasDatabaseName("ix_person_weapon_id");
 
-                    b.ToTable("Person", t =>
+                    b.ToTable("person", null, t =>
                         {
                             t.HasComment("جدول الأشخاص (موظفين، طلاب، موظفين)");
                         });
@@ -6015,71 +7079,86 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف السجل");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(true)
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("Notes")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)")
+                        .HasColumnName("notes")
                         .HasComment("ملاحظات");
 
                     b.Property<int>("PersonId")
                         .HasColumnType("integer")
+                        .HasColumnName("person_id")
                         .HasComment("معرّف الشخص");
 
                     b.Property<int>("PersonType")
                         .HasColumnType("integer")
+                        .HasColumnName("person_type")
                         .HasComment("نوع الشخص في هذه الجامعة (موظف، طالب، موظف)");
 
                     b.Property<int>("UniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("university_id")
                         .HasComment("معرّف الجامعة");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_person_university");
 
-                    b.HasIndex("UniversityId");
+                    b.HasIndex("UniversityId")
+                        .HasDatabaseName("ix_person_university_university_id");
 
                     b.HasIndex("PersonId", "UniversityId", "PersonType")
                         .IsUnique()
                         .HasDatabaseName("ix_person_university_person_type_unique");
 
-                    b.ToTable("PersonUniversity", t =>
+                    b.ToTable("person_university", null, t =>
                         {
                             t.HasComment("جدول العلاقة بين الأشخاص والجامعات (Many-to-Many)");
                         });
@@ -6089,63 +7168,79 @@ namespace StartBack.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateOnly?>("EndDate")
-                        .HasColumnType("date");
+                        .HasColumnType("date")
+                        .HasColumnName("end_date");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool?>("IsCurrent")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasDefaultValue(false);
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_current");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<int>("JobId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("job_id");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<int>("PersonUniversityId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("person_university_id");
 
                     b.Property<DateOnly>("StartDate")
-                        .HasColumnType("date");
+                        .HasColumnType("date")
+                        .HasColumnName("start_date");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_person_university_job");
 
-                    b.HasIndex("JobId");
+                    b.HasIndex("JobId")
+                        .HasDatabaseName("ix_person_university_job_job_id");
 
-                    b.HasIndex("PersonUniversityId");
+                    b.HasIndex("PersonUniversityId")
+                        .HasDatabaseName("ix_person_university_job_person_university_id");
 
-                    b.ToTable("PersonUniversityJob");
+                    b.ToTable("person_university_job", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.Tables.PersonUniversityQualification", b =>
@@ -6153,75 +7248,93 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف السجل");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CollegeId")
                         .HasColumnType("integer")
+                        .HasColumnName("college_id")
                         .HasComment("معرّف الكلية");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsCurrent")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(true)
+                        .HasColumnName("is_current")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("Notes")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)")
+                        .HasColumnName("notes")
                         .HasComment("ملاحظات");
 
                     b.Property<int>("PersonUniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("person_university_id")
                         .HasComment("معرّف العلاقة بين الشخص والجامعة");
 
                     b.Property<DateOnly?>("QualificationDate")
                         .HasColumnType("date")
+                        .HasColumnName("qualification_date")
                         .HasComment("تاريخ الحصول على المؤهل");
 
                     b.Property<int>("QualificationId")
                         .HasColumnType("integer")
+                        .HasColumnName("qualification_id")
                         .HasComment("معرّف المؤهل العلمي");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_person_university_qualification");
 
-                    b.HasIndex("CollegeId");
+                    b.HasIndex("CollegeId")
+                        .HasDatabaseName("ix_person_university_qualification_college_id");
 
-                    b.HasIndex("QualificationId");
+                    b.HasIndex("QualificationId")
+                        .HasDatabaseName("ix_person_university_qualification_qualification_id");
 
-                    b.HasIndex("PersonUniversityId", "CollegeId", "QualificationId");
+                    b.HasIndex("PersonUniversityId", "CollegeId", "QualificationId")
+                        .HasDatabaseName("ix_person_university_qualification_person_university_id_colleg");
 
-                    b.ToTable("PersonUniversityQualification", t =>
+                    b.ToTable("person_university_qualification", null, t =>
                         {
                             t.HasComment("جدول مؤهلات الشخص في الجامعة");
                         });
@@ -6231,57 +7344,72 @@ namespace StartBack.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AcademicYearId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("academic_year_id");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<int>("PersonUniversityId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("person_university_id");
 
                     b.Property<int>("SectionId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("section_id");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_person_university_section");
 
-                    b.HasIndex("AcademicYearId");
+                    b.HasIndex("AcademicYearId")
+                        .HasDatabaseName("ix_person_university_section_academic_year_id");
 
-                    b.HasIndex("PersonUniversityId");
+                    b.HasIndex("PersonUniversityId")
+                        .HasDatabaseName("ix_person_university_section_person_university_id");
 
-                    b.HasIndex("SectionId");
+                    b.HasIndex("SectionId")
+                        .HasDatabaseName("ix_person_university_section_section_id");
 
-                    b.ToTable("PersonUniversitySection");
+                    b.ToTable("person_university_section", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.Tables.Platoon", b =>
@@ -6289,6 +7417,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الفصيل");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -6297,66 +7426,81 @@ namespace StartBack.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
+                        .HasColumnName("code")
                         .HasComment("رمز الفصيل");
 
                     b.Property<int>("CompanyId")
                         .HasColumnType("integer")
+                        .HasColumnName("company_id")
                         .HasComment("معرّف السرية");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<string>("Description")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)")
+                        .HasColumnName("description")
                         .HasComment("وصف الفصيل");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("name_ar")
                         .HasComment("اسم الفصيل بالعربية");
 
                     b.Property<string>("NameEn")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("name_en")
                         .HasComment("اسم الفصيل بالإنجليزية");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_platoon");
 
-                    b.HasIndex("CompanyId");
+                    b.HasIndex("CompanyId")
+                        .HasDatabaseName("ix_platoon_company_id");
 
-                    b.ToTable("Platoon", t =>
+                    b.ToTable("platoon", null, t =>
                         {
                             t.HasComment("جدول الفصائل العسكرية");
                         });
@@ -6367,76 +7511,93 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الفترة");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<bool>("DoesGrades")
                         .HasColumnType("boolean")
+                        .HasColumnName("does_grades")
                         .HasComment("هل تحسب درجات");
 
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("date")
+                        .HasColumnName("end_date")
                         .HasComment("تاريخ النهاية");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<int>("QuarterId")
                         .HasColumnType("integer")
+                        .HasColumnName("quarter_id")
                         .HasComment("معرّف الربع");
 
                     b.Property<string>("ShortName")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
+                        .HasColumnName("short_name")
                         .HasComment("الاسم المختصر");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date")
+                        .HasColumnName("start_date")
                         .HasComment("تاريخ البداية");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("title")
                         .HasComment("عنوان الفترة");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_progress_period");
 
-                    b.HasIndex("QuarterId");
+                    b.HasIndex("QuarterId")
+                        .HasDatabaseName("ix_progress_period_quarter_id");
 
-                    b.ToTable("ProgressPeriod", t =>
+                    b.ToTable("progress_period", null, t =>
                         {
                             t.HasComment("جدول فترات التقدم والتقييم المستمر");
                         });
@@ -6447,84 +7608,103 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الربع");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<bool>("DoesGrades")
                         .HasColumnType("boolean")
+                        .HasColumnName("does_grades")
                         .HasComment("هل يحسب درجات");
 
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("date")
+                        .HasColumnName("end_date")
                         .HasComment("تاريخ النهاية");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<DateOnly?>("PostEndDate")
                         .HasColumnType("date")
+                        .HasColumnName("post_end_date")
                         .HasComment("تاريخ انتهاء الرصد");
 
                     b.Property<DateOnly?>("PostStartDate")
                         .HasColumnType("date")
+                        .HasColumnName("post_start_date")
                         .HasComment("تاريخ بدء الرصد");
 
                     b.Property<int>("SemesterId")
                         .HasColumnType("integer")
+                        .HasColumnName("semester_id")
                         .HasComment("معرّف الفصل الدراسي");
 
                     b.Property<string>("ShortName")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
+                        .HasColumnName("short_name")
                         .HasComment("الاسم المختصر");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date")
+                        .HasColumnName("start_date")
                         .HasComment("تاريخ البداية");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("title")
                         .HasComment("عنوان الربع");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_quarter");
 
-                    b.HasIndex("SemesterId");
+                    b.HasIndex("SemesterId")
+                        .HasDatabaseName("ix_quarter_semester_id");
 
-                    b.ToTable("Quarter", t =>
+                    b.ToTable("quarter", null, t =>
                         {
                             t.HasComment("جدول الأرباع الدراسية");
                         });
@@ -6535,68 +7715,83 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف العنبر");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("Capacity")
                         .HasColumnType("integer")
+                        .HasColumnName("capacity")
                         .HasComment("السعة");
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)")
+                        .HasColumnName("code")
                         .HasComment("رمز العنبر");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<int?>("FloorId")
                         .HasColumnType("integer")
+                        .HasColumnName("floor_id")
                         .HasComment("معرّف الطابق");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشطة");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("title")
                         .HasComment("اسم العنبر");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_room");
 
-                    b.HasIndex("FloorId");
+                    b.HasIndex("FloorId")
+                        .HasDatabaseName("ix_room_floor_id");
 
-                    b.ToTable("Room");
+                    b.ToTable("room", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.Tables.Section", b =>
@@ -6604,77 +7799,97 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الشعبة");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AcademicLevelId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("academic_level_id");
 
                     b.Property<int>("AcademicLevelIterationId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("academic_level_iteration_id");
 
                     b.Property<int>("AcademicYearId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("academic_year_id");
 
                     b.Property<int?>("Capacity")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasDefaultValue(0)
+                        .HasColumnName("capacity")
                         .HasComment("السعة القصوى");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text")
+                        .HasColumnName("name")
                         .HasComment("اسم الشعبة");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<int>("UniversityId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("university_id");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_section");
 
-                    b.HasIndex("AcademicLevelId");
+                    b.HasIndex("AcademicLevelId")
+                        .HasDatabaseName("ix_section_academic_level_id");
 
-                    b.HasIndex("AcademicLevelIterationId");
+                    b.HasIndex("AcademicLevelIterationId")
+                        .HasDatabaseName("ix_section_academic_level_iteration_id");
 
-                    b.HasIndex("AcademicYearId");
+                    b.HasIndex("AcademicYearId")
+                        .HasDatabaseName("ix_section_academic_year_id");
 
-                    b.HasIndex("UniversityId");
+                    b.HasIndex("UniversityId")
+                        .HasDatabaseName("ix_section_university_id");
 
-                    b.ToTable("Section", t =>
+                    b.ToTable("section", null, t =>
                         {
                             t.HasComment("جدول الفصول والشعب الدراسية");
                         });
@@ -6685,75 +7900,94 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الفصل الدراسي");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AcademicLevelId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("academic_level_id");
 
                     b.Property<int>("AcademicLevelIterationId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("academic_level_iteration_id");
 
                     b.Property<int>("AcademicYearId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("academic_year_id");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("date")
+                        .HasColumnName("end_date")
                         .HasComment("تاريخ النهاية");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date")
+                        .HasColumnName("start_date")
                         .HasComment("تاريخ البداية");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("title")
                         .HasComment("عنوان الفصل");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_semester");
 
-                    b.HasIndex("AcademicLevelId");
+                    b.HasIndex("AcademicLevelId")
+                        .HasDatabaseName("ix_semester_academic_level_id");
 
-                    b.HasIndex("AcademicLevelIterationId");
+                    b.HasIndex("AcademicLevelIterationId")
+                        .HasDatabaseName("ix_semester_academic_level_iteration_id");
 
-                    b.HasIndex("AcademicYearId");
+                    b.HasIndex("AcademicYearId")
+                        .HasDatabaseName("ix_semester_academic_year_id");
 
-                    b.ToTable("Semester", t =>
+                    b.ToTable("semester", null, t =>
                         {
                             t.HasComment("جدول الفصول الدراسية");
                         });
@@ -6764,136 +7998,166 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الموظف");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
                         .HasColumnType("text")
+                        .HasColumnName("address")
                         .HasComment("العنوان");
 
                     b.Property<DateOnly?>("Birthdate")
                         .HasColumnType("date")
+                        .HasColumnName("birthdate")
                         .HasComment("تاريخ الميلاد");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<string>("Email")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("email")
                         .HasComment("البريد الإلكتروني");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("first_name")
                         .HasComment("الاسم الأول");
 
                     b.Property<int?>("Gender")
                         .HasColumnType("integer")
+                        .HasColumnName("gender")
                         .HasComment("الجنس");
 
                     b.Property<DateOnly?>("HireDate")
                         .HasColumnType("date")
+                        .HasColumnName("hire_date")
                         .HasComment("تاريخ التعيين");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("last_name")
                         .HasComment("اسم العائلة");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("MiddleName")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("middle_name")
                         .HasComment("الاسم الأوسط");
 
                     b.Property<string>("Mobile")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
+                        .HasColumnName("mobile")
                         .HasComment("رقم الجوال");
 
                     b.Property<string>("NameSuffix")
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
+                        .HasColumnName("name_suffix")
                         .HasComment("اللاحقة");
 
                     b.Property<string>("NationalId")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
+                        .HasColumnName("national_id")
                         .HasComment("رقم الهوية");
 
                     b.Property<int?>("NationalityId")
                         .HasColumnType("integer")
+                        .HasColumnName("nationality_id")
                         .HasComment("معرّف الجنسية");
 
                     b.Property<string>("Phone")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
+                        .HasColumnName("phone")
                         .HasComment("رقم الهاتف");
 
                     b.Property<string>("PhotoPath")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)")
+                        .HasColumnName("photo_path")
                         .HasComment("مسار الصورة");
 
                     b.Property<int?>("StaffCategoryId")
                         .HasColumnType("integer")
+                        .HasColumnName("staff_category_id")
                         .HasComment("معرّف فئة الموظف");
 
                     b.Property<string>("StaffCode")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)")
+                        .HasColumnName("staff_code")
                         .HasComment("رمز الموظف");
 
                     b.Property<DateOnly?>("TerminationDate")
                         .HasColumnType("date")
+                        .HasColumnName("termination_date")
                         .HasComment("تاريخ إنهاء الخدمة");
 
                     b.Property<string>("Title")
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
+                        .HasColumnName("title")
                         .HasComment("اللقب");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_staff");
 
-                    b.HasIndex("NationalityId");
+                    b.HasIndex("NationalityId")
+                        .HasDatabaseName("ix_staff_nationality_id");
 
-                    b.HasIndex("StaffCategoryId");
+                    b.HasIndex("StaffCategoryId")
+                        .HasDatabaseName("ix_staff_staff_category_id");
 
-                    b.ToTable("Staff", t =>
+                    b.ToTable("staff", null, t =>
                         {
                             t.HasComment("جدول الموظفين والأساتذة");
                         });
@@ -6904,295 +8168,110 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف التعيين");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AcademicYearId")
                         .HasColumnType("integer")
+                        .HasColumnName("academic_year_id")
                         .HasComment("معرّف السنة الدراسية");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<string>("Department")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("department")
                         .HasComment("القسم");
 
                     b.Property<DateOnly?>("EndDate")
                         .HasColumnType("date")
+                        .HasColumnName("end_date")
                         .HasComment("تاريخ الانتهاء");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشط");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<bool>("IsPrimary")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_primary")
                         .HasComment("هل التعيين الأساسي");
 
                     b.Property<string>("JobTitle")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnName("job_title")
                         .HasComment("المسمى الوظيفي");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<int>("PersonUniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("person_university_id")
                         .HasComment("معرّف علاقة الموظف بالجامعة");
 
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date")
+                        .HasColumnName("start_date")
                         .HasComment("تاريخ البدء");
 
                     b.Property<int>("UniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("university_id")
                         .HasComment("معرّف الجامعة");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_staff_university_assignment");
 
-                    b.HasIndex("AcademicYearId");
+                    b.HasIndex("AcademicYearId")
+                        .HasDatabaseName("ix_staff_university_assignment_academic_year_id");
 
-                    b.HasIndex("UniversityId");
+                    b.HasIndex("UniversityId")
+                        .HasDatabaseName("ix_staff_university_assignment_university_id");
 
                     b.HasIndex("PersonUniversityId", "UniversityId", "AcademicYearId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_staff_university_assignment_person_university_id_university");
 
-                    b.ToTable("StaffUniversityAssignment", t =>
+                    b.ToTable("staff_university_assignment", null, t =>
                         {
                             t.HasComment("جدول تعيينات الموظفين في الجامعات");
-                        });
-                });
-
-            modelBuilder.Entity("Entities.Models.Tables.Student", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasComment("معرّف الطالب");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .HasColumnType("text")
-                        .HasComment("العنوان");
-
-                    b.Property<string>("BatchNumber")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
-                        .HasComment("رقم الدفعة");
-
-                    b.Property<DateOnly?>("Birthdate")
-                        .HasColumnType("date")
-                        .HasComment("تاريخ الميلاد");
-
-                    b.Property<int?>("CurrentUniversityId")
-                        .HasColumnType("integer")
-                        .HasComment("معرّف الجامعة الحالية");
-
-                    b.Property<DateTime?>("DeleteDate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasComment("تاريخ الحذف");
-
-                    b.Property<string>("DeleteUserCode")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
-                        .HasComment("البريد الإلكتروني");
-
-                    b.Property<int?>("EthnicityId")
-                        .HasColumnType("integer")
-                        .HasComment("معرّف العرق");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasComment("الاسم الأول");
-
-                    b.Property<int?>("Gender")
-                        .HasColumnType("integer")
-                        .HasComment("الجنس");
-
-                    b.Property<DateOnly?>("HighSchoolGraduationDate")
-                        .HasColumnType("date")
-                        .HasComment("تاريخ الحصول على شهادة الثانوية العامة");
-
-                    b.Property<decimal?>("HighSchoolPercentage")
-                        .HasColumnType("numeric")
-                        .HasComment("النسبة المئوية في الثانوية العامة");
-
-                    b.Property<decimal?>("HighSchoolScore")
-                        .HasColumnType("numeric")
-                        .HasComment("مجموع الثانوية العامة");
-
-                    b.Property<string>("HousingBuilding")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasComment("المبنى");
-
-                    b.Property<string>("HousingCompany")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasComment("السرية العسكرية");
-
-                    b.Property<string>("HousingFloor")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
-                        .HasComment("الطابق/العمارة");
-
-                    b.Property<string>("HousingLocker")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
-                        .HasComment("رقم الدوالب");
-
-                    b.Property<string>("HousingPlatoon")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasComment("الفصيلة العسكرية");
-
-                    b.Property<string>("HousingRoom")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
-                        .HasComment("رقم الغرفة");
-
-                    b.Property<string>("HousingSquad")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasComment("الجماعة العسكرية");
-
-                    b.Property<string>("HousingWeapon")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasComment("السلاح (مشاة، مدرعات، الخ)");
-
-                    b.Property<DateTime>("InsertDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("NOW()")
-                        .HasComment("تاريخ الإنشاء");
-
-                    b.Property<string>("InsertUserCode")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean")
-                        .HasComment("هل نشط");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<int?>("LanguageId")
-                        .HasColumnType("integer")
-                        .HasComment("معرّف اللغة");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasComment("اسم العائلة");
-
-                    b.Property<DateTime?>("LastUpdate")
-                        .HasColumnType("timestamp with time zone")
-                        .HasComment("تاريخ التحديث");
-
-                    b.Property<string>("MiddleName")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasComment("الاسم الأوسط");
-
-                    b.Property<string>("MilitaryNumber")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasComment("الرقم العسكري");
-
-                    b.Property<string>("Mobile")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasComment("رقم الجوال");
-
-                    b.Property<string>("NameAr")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
-                        .HasComment("الاسم الكامل بالعربية");
-
-                    b.Property<string>("NameSuffix")
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)")
-                        .HasComment("اللاحقة");
-
-                    b.Property<string>("NationalId")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasComment("رقم الهوية");
-
-                    b.Property<int?>("NationalityId")
-                        .HasColumnType("integer")
-                        .HasComment("معرّف الجنسية");
-
-                    b.Property<string>("Phone")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasComment("رقم الهاتف");
-
-                    b.Property<string>("PhotoPath")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)")
-                        .HasComment("مسار الصورة");
-
-                    b.Property<string>("StudentCode")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)")
-                        .HasComment("رمز الطالب");
-
-                    b.Property<string>("UpdateUserCode")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CurrentUniversityId");
-
-                    b.HasIndex("EthnicityId");
-
-                    b.HasIndex("LanguageId");
-
-                    b.HasIndex("NationalityId");
-
-                    b.ToTable("Student", t =>
-                        {
-                            t.HasComment("جدول بيانات الطلاب");
                         });
                 });
 
@@ -7201,61 +8280,76 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف التسجيل");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CourseSemesterSectionId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("course_semester_section_id");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<DateOnly?>("EndDate")
                         .HasColumnType("date")
+                        .HasColumnName("end_date")
                         .HasComment("تاريخ الانتهاء");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<int>("PersonUniversityId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("person_university_id");
 
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date")
+                        .HasColumnName("start_date")
                         .HasComment("تاريخ البدء");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_student_course_enrollment");
 
-                    b.HasIndex("CourseSemesterSectionId");
+                    b.HasIndex("CourseSemesterSectionId")
+                        .HasDatabaseName("ix_student_course_enrollment_course_semester_section_id");
 
                     b.HasIndex("PersonUniversityId", "CourseSemesterSectionId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_student_course_enrollment_person_university_id_course_semes");
 
-                    b.ToTable("StudentCourseEnrollment", t =>
+                    b.ToTable("student_course_enrollment", null, t =>
                         {
                             t.HasComment("جدول تسجيل الطلاب في حصص المقررات");
                         });
@@ -7265,108 +8359,142 @@ namespace StartBack.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AcademicLevelId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("academic_level_id");
 
                     b.Property<int?>("AcademicLevelIterationId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("academic_level_iteration_id");
 
                     b.Property<int>("AcademicYearId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("academic_year_id");
 
                     b.Property<int?>("BattalionId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("battalion_id");
 
                     b.Property<int?>("BedNumber")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("bed_number");
 
                     b.Property<int?>("BuildingId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("building_id");
 
                     b.Property<int?>("CompanyId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("company_id");
 
                     b.Property<int?>("CupboardNumber")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("cupboard_number");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<int?>("FloorId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("floor_id");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool?>("IsCurrent")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasDefaultValue(false);
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_current");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<int>("PersonUniversityId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("person_university_id");
 
                     b.Property<int?>("PlatoonId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("platoon_id");
 
                     b.Property<int?>("RoomId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("room_id");
 
                     b.Property<int?>("SectionId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("section_id");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_student_enrollment");
 
-                    b.HasIndex("AcademicLevelId");
+                    b.HasIndex("AcademicLevelId")
+                        .HasDatabaseName("ix_student_enrollment_academic_level_id");
 
-                    b.HasIndex("AcademicLevelIterationId");
+                    b.HasIndex("AcademicLevelIterationId")
+                        .HasDatabaseName("ix_student_enrollment_academic_level_iteration_id");
 
-                    b.HasIndex("AcademicYearId");
+                    b.HasIndex("AcademicYearId")
+                        .HasDatabaseName("ix_student_enrollment_academic_year_id");
 
-                    b.HasIndex("BattalionId");
+                    b.HasIndex("BattalionId")
+                        .HasDatabaseName("ix_student_enrollment_battalion_id");
 
-                    b.HasIndex("BuildingId");
+                    b.HasIndex("BuildingId")
+                        .HasDatabaseName("ix_student_enrollment_building_id");
 
-                    b.HasIndex("CompanyId");
+                    b.HasIndex("CompanyId")
+                        .HasDatabaseName("ix_student_enrollment_company_id");
 
-                    b.HasIndex("FloorId");
+                    b.HasIndex("FloorId")
+                        .HasDatabaseName("ix_student_enrollment_floor_id");
 
-                    b.HasIndex("PersonUniversityId");
+                    b.HasIndex("PersonUniversityId")
+                        .HasDatabaseName("ix_student_enrollment_person_university_id");
 
-                    b.HasIndex("PlatoonId");
+                    b.HasIndex("PlatoonId")
+                        .HasDatabaseName("ix_student_enrollment_platoon_id");
 
-                    b.HasIndex("RoomId");
+                    b.HasIndex("RoomId")
+                        .HasDatabaseName("ix_student_enrollment_room_id");
 
-                    b.HasIndex("SectionId");
+                    b.HasIndex("SectionId")
+                        .HasDatabaseName("ix_student_enrollment_section_id");
 
-                    b.ToTable("StudentEnrollment");
+                    b.ToTable("student_enrollment", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.Tables.StudentFitnessTestResult", b =>
@@ -7374,124 +8502,151 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("المعرف الأساسي");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AcademicYearId")
                         .HasColumnType("integer")
+                        .HasColumnName("academic_year_id")
                         .HasComment("معرف العام الأكاديمي");
 
                     b.Property<decimal?>("AchievedDegree")
                         .HasPrecision(6, 2)
                         .HasColumnType("numeric(6,2)")
+                        .HasColumnName("achieved_degree")
                         .HasComment("الدرجة المستحقة من الاختبار");
 
                     b.Property<decimal?>("AchievedPercentage")
                         .HasPrecision(5, 2)
                         .HasColumnType("numeric(5,2)")
+                        .HasColumnName("achieved_percentage")
                         .HasComment("النسبة المئوية المستحقة");
 
                     b.Property<int?>("AgeStageId")
                         .HasColumnType("integer")
+                        .HasColumnName("age_stage_id")
                         .HasComment("معرف المرحلة السنية المستخدمة في التقييم");
 
                     b.Property<short>("AttemptNo")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
                         .HasDefaultValue((short)1)
+                        .HasColumnName("attempt_no")
                         .HasComment("رقم المحاولة لنفس التمرين في نفس المحاضرة");
 
                     b.Property<int>("CourseId")
                         .HasColumnType("integer")
+                        .HasColumnName("course_id")
                         .HasComment("معرف المادة");
 
                     b.Property<int>("CourseSectionMeetingId")
                         .HasColumnType("integer")
+                        .HasColumnName("course_section_meeting_id")
                         .HasComment("معرف المحاضرة داخل المادة");
 
                     b.Property<int>("DegreeDivisionId")
                         .HasColumnType("integer")
+                        .HasColumnName("degree_division_id")
                         .HasComment("معرف سطر تقسيم الدرجات الخاص باختبار اللياقة");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<int?>("EvaluationId")
                         .HasColumnType("integer")
+                        .HasColumnName("evaluation_id")
                         .HasComment("معرف شريحة التقييم المرجعية (اختياري)");
 
                     b.Property<int>("ExerciseId")
                         .HasColumnType("integer")
+                        .HasColumnName("exercise_id")
                         .HasComment("معرف التمرين");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsAbsent")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(false)
+                        .HasColumnName("is_absent")
                         .HasComment("هل الطالب غائب في هذا الاختبار");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(true)
+                        .HasColumnName("is_active")
                         .HasComment("هل السجل مفعل");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("Notes")
                         .HasColumnType("text")
+                        .HasColumnName("notes")
                         .HasComment("ملاحظات إضافية على نتيجة الاختبار");
 
                     b.Property<decimal>("PerformedValue")
                         .HasPrecision(6, 2)
                         .HasColumnType("numeric(6,2)")
+                        .HasColumnName("performed_value")
                         .HasComment("القيمة المنفذة في الاختبار (عدد/زمن/مسافة حسب التمرين)");
 
                     b.Property<int>("StudentCourseEnrollmentId")
                         .HasColumnType("integer")
+                        .HasColumnName("student_course_enrollment_id")
                         .HasComment("معرف تسجيل الطالب في مجموعة المادة");
 
                     b.Property<DateTime>("TestDatetime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("test_datetime")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ ووقت تنفيذ الاختبار");
 
                     b.Property<int>("UniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("university_id")
                         .HasComment("معرف الجامعة");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_student_fitness_test_results");
 
                     b.HasIndex("AcademicYearId")
                         .HasDatabaseName("ix_student_fitness_result_academic_year");
 
-                    b.HasIndex("AgeStageId");
+                    b.HasIndex("AgeStageId")
+                        .HasDatabaseName("ix_student_fitness_test_results_age_stage_id");
 
                     b.HasIndex("CourseId")
                         .HasDatabaseName("ix_student_fitness_result_course");
@@ -7499,9 +8654,11 @@ namespace StartBack.Infrastructure.Migrations
                     b.HasIndex("CourseSectionMeetingId")
                         .HasDatabaseName("ix_student_fitness_result_meeting");
 
-                    b.HasIndex("DegreeDivisionId");
+                    b.HasIndex("DegreeDivisionId")
+                        .HasDatabaseName("ix_student_fitness_test_results_degree_division_id");
 
-                    b.HasIndex("EvaluationId");
+                    b.HasIndex("EvaluationId")
+                        .HasDatabaseName("ix_student_fitness_test_results_evaluation_id");
 
                     b.HasIndex("ExerciseId")
                         .HasDatabaseName("ix_student_fitness_result_exercise");
@@ -7535,107 +8692,135 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف السجل");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AcademicYearId")
                         .HasColumnType("integer")
+                        .HasColumnName("academic_year_id")
                         .HasComment("معرّف السنة الدراسية");
 
                     b.Property<int?>("BatchRank")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("batch_rank");
 
                     b.Property<DateTime>("CalculatedAt")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("calculated_at")
                         .HasComment("تاريخ الحساب");
 
                     b.Property<int?>("ClassRank")
                         .HasColumnType("integer")
+                        .HasColumnName("class_rank")
                         .HasComment("ترتيب الدفعة");
 
                     b.Property<int?>("ClassSize")
                         .HasColumnType("integer")
+                        .HasColumnName("class_size")
                         .HasComment("عدد الدفعة");
 
                     b.Property<decimal?>("CreditsEarned")
                         .HasColumnType("numeric")
+                        .HasColumnName("credits_earned")
                         .HasComment("الساعات المكتسبة");
 
                     b.Property<decimal?>("CumulativeGpa")
                         .HasColumnType("numeric")
+                        .HasColumnName("cumulative_gpa")
                         .HasComment("المعدل التراكمي");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<decimal?>("Gpa")
                         .HasColumnType("numeric")
+                        .HasColumnName("gpa")
                         .HasComment("المعدل الفصلي");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<int>("PersonUniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("person_university_id")
                         .HasComment("معرّف علاقة الطالب بالجامعة");
 
                     b.Property<int?>("SemesterId")
                         .HasColumnType("integer")
+                        .HasColumnName("semester_id")
                         .HasComment("معرّف الفصل الدراسي");
 
                     b.Property<int?>("SemesterRank")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("semester_rank");
 
                     b.Property<decimal?>("TotalMaxScore")
-                        .HasColumnType("numeric");
+                        .HasColumnType("numeric")
+                        .HasColumnName("total_max_score");
 
                     b.Property<decimal?>("TotalScore")
-                        .HasColumnType("numeric");
+                        .HasColumnType("numeric")
+                        .HasColumnName("total_score");
 
                     b.Property<int>("UniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("university_id")
                         .HasComment("معرّف الجامعة");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
                     b.Property<decimal?>("WeightedGpa")
                         .HasColumnType("numeric")
+                        .HasColumnName("weighted_gpa")
                         .HasComment("المعدل الموزون");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_student_gpa");
 
-                    b.HasIndex("AcademicYearId");
+                    b.HasIndex("AcademicYearId")
+                        .HasDatabaseName("ix_student_gpa_academic_year_id");
 
-                    b.HasIndex("SemesterId");
+                    b.HasIndex("SemesterId")
+                        .HasDatabaseName("ix_student_gpa_semester_id");
 
-                    b.HasIndex("UniversityId");
+                    b.HasIndex("UniversityId")
+                        .HasDatabaseName("ix_student_gpa_university_id");
 
                     b.HasIndex("PersonUniversityId", "AcademicYearId", "SemesterId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_student_gpa_person_university_id_academic_year_id_semester_");
 
-                    b.ToTable("StudentGpa", t =>
+                    b.ToTable("student_gpa", null, t =>
                         {
                             t.HasComment("جدول المعدل التراكمي المحسوب للطلاب");
                         });
@@ -7646,81 +8831,101 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف العلاقة");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("CanPickup")
                         .HasColumnType("boolean")
+                        .HasColumnName("can_pickup")
                         .HasComment("يمكنه استلام الطالب");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<int>("GuardianId")
                         .HasColumnType("integer")
+                        .HasColumnName("guardian_id")
                         .HasComment("معرّف ولي الأمر");
 
                     b.Property<bool>("HasCustody")
                         .HasColumnType("boolean")
+                        .HasColumnName("has_custody")
                         .HasComment("لديه حق الوصاية");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<bool>("IsEmergencyContact")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_emergency_contact")
                         .HasComment("جهة اتصال للطوارئ");
 
                     b.Property<bool>("IsPrimary")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_primary")
                         .HasComment("هل ولي الأمر الأساسي");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<int>("PersonUniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("person_university_id")
                         .HasComment("معرّف علاقة الطالب بالجامعة");
 
                     b.Property<bool>("ReceivesMailing")
                         .HasColumnType("boolean")
+                        .HasColumnName("receives_mailing")
                         .HasComment("يستلم المراسلات");
 
                     b.Property<int>("RelationshipTypeId")
                         .HasColumnType("integer")
+                        .HasColumnName("relationship_type_id")
                         .HasComment("معرّف نوع العلاقة");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_student_guardian");
 
-                    b.HasIndex("GuardianId");
+                    b.HasIndex("GuardianId")
+                        .HasDatabaseName("ix_student_guardian_guardian_id");
 
-                    b.HasIndex("RelationshipTypeId");
+                    b.HasIndex("RelationshipTypeId")
+                        .HasDatabaseName("ix_student_guardian_relationship_type_id");
 
                     b.HasIndex("PersonUniversityId", "GuardianId", "RelationshipTypeId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_student_guardian_person_university_id_guardian_id_relations");
 
-                    b.ToTable("StudentGuardian", t =>
+                    b.ToTable("student_guardian", null, t =>
                         {
                             t.HasComment("جدول علاقة الطلاب بأولياء الأمور");
                         });
@@ -7731,90 +8936,111 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف المادة");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AcademicYearId")
                         .HasColumnType("integer")
+                        .HasColumnName("academic_year_id")
                         .HasComment("معرّف السنة الدراسية");
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)")
+                        .HasColumnName("code")
                         .HasComment("رمز المادة");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<string>("Description")
                         .HasColumnType("text")
+                        .HasColumnName("description")
                         .HasComment("وصف المادة");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشطة");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("ShortName")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
+                        .HasColumnName("short_name")
                         .HasComment("الاسم المختصر");
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("integer")
+                        .HasColumnName("sort_order")
                         .HasComment("ترتيب العرض");
 
                     b.Property<int?>("SubjectTypeId")
                         .HasColumnType("integer")
+                        .HasColumnName("subject_type_id")
                         .HasComment("معرّف نوع المادة");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("title")
                         .HasComment("اسم المادة");
 
                     b.Property<int>("UniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("university_id")
                         .HasComment("معرّف الجامعة");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_subject");
 
-                    b.HasIndex("AcademicYearId");
+                    b.HasIndex("AcademicYearId")
+                        .HasDatabaseName("ix_subject_academic_year_id");
 
-                    b.HasIndex("SubjectTypeId");
+                    b.HasIndex("SubjectTypeId")
+                        .HasDatabaseName("ix_subject_subject_type_id");
 
                     b.HasIndex("UniversityId", "AcademicYearId", "Code")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_subject_university_id_academic_year_id_code");
 
-                    b.ToTable("Subject", t =>
+                    b.ToTable("subject", null, t =>
                         {
                             t.HasComment("جدول المواد الدراسية");
                         });
@@ -7825,6 +9051,7 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف السجل");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
@@ -7832,110 +9059,136 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<string>("AcademicLevel")
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)")
+                        .HasColumnName("academic_level")
                         .HasComment("المستوى الأكاديمي");
 
                     b.Property<int?>("AcademicYearId")
                         .HasColumnType("integer")
+                        .HasColumnName("academic_year_id")
                         .HasComment("معرّف السنة الدراسية");
 
                     b.Property<string>("AcademicYearTitle")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
+                        .HasColumnName("academic_year_title")
                         .HasComment("عنوان السنة الدراسية");
 
                     b.Property<string>("CourseCode")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
+                        .HasColumnName("course_code")
                         .HasComment("رمز المقرر");
 
                     b.Property<string>("CourseTitle")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("course_title")
                         .HasComment("اسم المقرر");
 
                     b.Property<decimal?>("CreditsAttempted")
                         .HasColumnType("numeric")
+                        .HasColumnName("credits_attempted")
                         .HasComment("الساعات المحاولة");
 
                     b.Property<decimal?>("CreditsEarned")
                         .HasColumnType("numeric")
+                        .HasColumnName("credits_earned")
                         .HasComment("الساعات المكتسبة");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<decimal?>("GpaValue")
                         .HasColumnType("numeric")
+                        .HasColumnName("gpa_value")
                         .HasComment("قيمة المعدل");
 
                     b.Property<decimal?>("GradePercent")
                         .HasColumnType("numeric")
+                        .HasColumnName("grade_percent")
                         .HasComment("النسبة المئوية");
 
                     b.Property<bool>("IncludeInGpa")
                         .HasColumnType("boolean")
+                        .HasColumnName("include_in_gpa")
                         .HasComment("يحسب في المعدل");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<bool>("IsTransfer")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_transfer")
                         .HasComment("منقول");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<string>("LetterGrade")
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)")
+                        .HasColumnName("letter_grade")
                         .HasComment("التقدير");
 
                     b.Property<string>("Notes")
                         .HasColumnType("text")
+                        .HasColumnName("notes")
                         .HasComment("ملاحظات");
 
                     b.Property<int>("PersonUniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("person_university_id")
                         .HasComment("معرّف علاقة الطالب بالجامعة");
 
                     b.Property<int>("UniversityId")
                         .HasColumnType("integer")
+                        .HasColumnName("university_id")
                         .HasComment("معرّف الجامعة");
 
                     b.Property<string>("UniversityName")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("university_name")
                         .HasComment("اسم الجامعة");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_transcript");
 
-                    b.HasIndex("PersonUniversityId");
+                    b.HasIndex("PersonUniversityId")
+                        .HasDatabaseName("ix_transcript_person_university_id");
 
-                    b.HasIndex("UniversityId");
+                    b.HasIndex("UniversityId")
+                        .HasDatabaseName("ix_transcript_university_id");
 
-                    b.ToTable("Transcript", t =>
+                    b.ToTable("transcript", null, t =>
                         {
                             t.HasComment("جدول السجل الأكاديمي (الشهادة الدراسية)");
                         });
@@ -7946,77 +9199,94 @@ namespace StartBack.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
+                        .HasColumnName("id")
                         .HasComment("معرّف الجامعة");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("delete_date")
                         .HasComment("تاريخ الحذف");
 
                     b.Property<string>("DeleteUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("delete_user_code");
 
                     b.Property<string>("Icon")
                         .HasMaxLength(150)
                         .HasColumnType("character varying(150)")
+                        .HasColumnName("icon")
                         .HasComment("الايقونة");
 
                     b.Property<DateTime>("InsertDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("insert_date")
                         .HasDefaultValueSql("NOW()")
                         .HasComment("تاريخ الإنشاء");
 
                     b.Property<string>("InsertUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("insert_user_code");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean")
+                        .HasColumnName("is_active")
                         .HasComment("هل نشطة");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<DateTime?>("LastUpdate")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_update")
                         .HasComment("تاريخ التحديث");
 
                     b.Property<int?>("Level")
                         .HasColumnType("integer")
+                        .HasColumnName("level")
                         .HasComment("المستوي");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("name_ar")
                         .HasComment("اسم الجامعة بالعربية");
 
                     b.Property<string>("NameEn")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
+                        .HasColumnName("name_en")
                         .HasComment("اسم الجامعة بالإنجليزية");
 
                     b.Property<int?>("ParentId")
                         .HasColumnType("integer")
+                        .HasColumnName("parent_id")
                         .HasComment("المستوي الاعلي");
 
                     b.Property<string>("ShortName")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
+                        .HasColumnName("short_name")
                         .HasComment("الاسم المختصر");
 
                     b.Property<string>("UpdateUserCode")
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("update_user_code");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_university");
 
-                    b.HasIndex("ParentId");
+                    b.HasIndex("ParentId")
+                        .HasDatabaseName("ix_university_parent_id");
 
-                    b.ToTable("University", t =>
+                    b.ToTable("university", null, t =>
                         {
                             t.HasComment("جدول الجامعات والمؤسسات الأكاديمية");
                         });
@@ -8025,391 +9295,494 @@ namespace StartBack.Infrastructure.Migrations
             modelBuilder.Entity("MenuItemPermission", b =>
                 {
                     b.Property<Guid>("MenuItemId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("menu_item_id");
 
                     b.Property<Guid>("RequiredPermissionsId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("required_permissions_id");
 
-                    b.HasKey("MenuItemId", "RequiredPermissionsId");
+                    b.HasKey("MenuItemId", "RequiredPermissionsId")
+                        .HasName("pk_menu_item_permission");
 
-                    b.HasIndex("RequiredPermissionsId");
+                    b.HasIndex("RequiredPermissionsId")
+                        .HasDatabaseName("ix_menu_item_permission_required_permissions_id");
 
-                    b.ToTable("MenuItemPermission");
+                    b.ToTable("menu_item_permission", (string)null);
                 });
 
             modelBuilder.Entity("PermissionRole", b =>
                 {
                     b.Property<Guid>("PermissionsId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("permissions_id");
 
                     b.Property<Guid>("RoleId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("role_id");
 
-                    b.HasKey("PermissionsId", "RoleId");
+                    b.HasKey("PermissionsId", "RoleId")
+                        .HasName("pk_permission_role");
 
-                    b.HasIndex("RoleId");
+                    b.HasIndex("RoleId")
+                        .HasDatabaseName("ix_permission_role_role_id");
 
-                    b.ToTable("PermissionRole");
+                    b.ToTable("permission_role", (string)null);
                 });
 
             modelBuilder.Entity("RoleUser", b =>
                 {
                     b.Property<Guid>("RolesId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("roles_id");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
 
-                    b.HasKey("RolesId", "UserId");
+                    b.HasKey("RolesId", "UserId")
+                        .HasName("pk_role_user");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_role_user_user_id");
 
-                    b.ToTable("RoleUser");
+                    b.ToTable("role_user", (string)null);
                 });
 
             modelBuilder.Entity("StartBack.Domain.Entities.Icon", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("DisplayName")
                         .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("display_name");
 
                     b.Property<string>("Key")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("key");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_icons");
 
                     b.HasIndex("Key")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_icons_key");
 
-                    b.ToTable("Icons");
+                    b.ToTable("icons", (string)null);
                 });
 
             modelBuilder.Entity("StartBack.Domain.Entities.MenuItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<Guid?>("IconId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("icon_id");
 
                     b.Property<string>("Key")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("key");
 
                     b.Property<int>("Order")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("order");
 
                     b.Property<Guid?>("ParentId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("parent_id");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("title");
 
                     b.Property<string>("TitleAr")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("title_ar");
 
                     b.Property<string>("TitleEn")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("title_en");
 
                     b.Property<string>("Url")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("url");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_menu_items");
 
-                    b.HasIndex("IconId");
+                    b.HasIndex("IconId")
+                        .HasDatabaseName("ix_menu_items_icon_id");
 
                     b.HasIndex("Key")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_menu_items_key");
 
-                    b.HasIndex("ParentId");
+                    b.HasIndex("ParentId")
+                        .HasDatabaseName("ix_menu_items_parent_id");
 
-                    b.ToTable("MenuItems");
+                    b.ToTable("menu_items", (string)null);
                 });
 
             modelBuilder.Entity("StartBack.Domain.Entities.Permission", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("code");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("name");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_permissions");
 
                     b.HasIndex("Code")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_permissions_code");
 
-                    b.ToTable("Permissions");
+                    b.ToTable("permissions", (string)null);
                 });
 
             modelBuilder.Entity("StartBack.Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
 
                     b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expires_at");
 
                     b.Property<string>("ReplacedByToken")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("replaced_by_token");
 
                     b.Property<DateTime?>("RevokedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("revoked_at");
 
                     b.Property<string>("Token")
                         .IsRequired()
                         .HasMaxLength(512)
-                        .HasColumnType("character varying(512)");
+                        .HasColumnType("character varying(512)")
+                        .HasColumnName("token");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_refresh_tokens");
 
                     b.HasIndex("Token")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_refresh_tokens_token");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_refresh_tokens_user_id");
 
-                    b.ToTable("RefreshTokens");
+                    b.ToTable("refresh_tokens", (string)null);
                 });
 
             modelBuilder.Entity("StartBack.Domain.Entities.Report", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Active")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("active");
 
                     b.Property<string>("Category")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("category");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("created_by");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deleted_at");
 
                     b.Property<string>("DeletedBy")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("deleted_by");
 
                     b.Property<string>("Description")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("description");
 
                     b.Property<string>("DetailColumn")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("detail_column");
 
                     b.Property<int?>("DetailId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("detail_id");
 
                     b.Property<bool>("HasDetail")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("has_detail");
 
                     b.Property<bool>("Hide")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("hide");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<string>("NameAr")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("name_ar");
 
                     b.Property<string>("NameEn")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("name_en");
 
                     b.Property<string>("Path")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("path");
 
                     b.Property<string>("Query")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("query");
 
                     b.Property<string>("ReportType")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("report_type");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
 
                     b.Property<string>("UpdatedBy")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("updated_by");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_reports");
 
-                    b.ToTable("Reports");
+                    b.ToTable("reports", (string)null);
                 });
 
             modelBuilder.Entity("StartBack.Domain.Entities.ReportColumn", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Field")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("field");
 
                     b.Property<string>("Filter")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("filter");
 
                     b.Property<bool>("FloatingFilter")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("floating_filter");
 
                     b.Property<string>("HeaderName")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("header_name");
 
                     b.Property<bool>("Hide")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("hide");
 
                     b.Property<bool>("IsMaster")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_master");
 
                     b.Property<int>("ReportId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("report_id");
 
                     b.Property<bool>("Resizable")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("resizable");
 
                     b.Property<bool>("RowGroup")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("row_group");
 
                     b.Property<int>("Sort")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("sort");
 
                     b.Property<bool>("Sortable")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("sortable");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_report_columns");
 
-                    b.HasIndex("ReportId");
+                    b.HasIndex("ReportId")
+                        .HasDatabaseName("ix_report_columns_report_id");
 
-                    b.ToTable("ReportColumns");
+                    b.ToTable("report_columns", (string)null);
                 });
 
             modelBuilder.Entity("StartBack.Domain.Entities.ReportParameter", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("DataType")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("data_type");
 
                     b.Property<string>("DefaultValue")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("default_value");
 
                     b.Property<string>("DisplayName")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("display_name");
 
                     b.Property<bool>("IsRequired")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_required");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
                     b.Property<string>("ParameterType")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("parameter_type");
 
                     b.Property<string>("QueryForDropdown")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("query_for_dropdown");
 
                     b.Property<int>("ReportId")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("report_id");
 
                     b.Property<int?>("Sort")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("sort");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_report_parameters");
 
-                    b.HasIndex("ReportId");
+                    b.HasIndex("ReportId")
+                        .HasDatabaseName("ix_report_parameters_report_id");
 
-                    b.ToTable("ReportParameters");
+                    b.ToTable("report_parameters", (string)null);
                 });
 
             modelBuilder.Entity("StartBack.Domain.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("DefaultPageUrl")
                         .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("default_page_url");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_roles");
 
-                    b.ToTable("Roles");
+                    b.ToTable("roles", (string)null);
                 });
 
             modelBuilder.Entity("StartBack.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("DisplayName")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("display_name");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("password_hash");
 
                     b.Property<string>("ProfileImageUrl")
                         .HasMaxLength(300)
-                        .HasColumnType("character varying(300)");
+                        .HasColumnType("character varying(300)")
+                        .HasColumnName("profile_image_url");
 
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("username");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_users");
 
-                    b.ToTable("Users");
+                    b.ToTable("users", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.Tables.AcademicCalendar", b =>
@@ -8418,13 +9791,15 @@ namespace StartBack.Infrastructure.Migrations
                         .WithOne("AcademicCalendar")
                         .HasForeignKey("Entities.Models.Tables.AcademicCalendar", "AcademicYearId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_academic_calendar_academic_year_academic_year_id");
 
                     b.HasOne("Entities.Models.Tables.University", "University")
                         .WithMany("AcademicCalendars")
                         .HasForeignKey("UniversityId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_academic_calendar_university_university_id");
 
                     b.Navigation("AcademicYear");
 
@@ -8437,7 +9812,8 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("AcademicCalendarDetails")
                         .HasForeignKey("AcademicCalendarId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_academic_calendar_detail_academic_calendar_academic_calenda");
 
                     b.Navigation("AcademicCalendar");
                 });
@@ -8447,23 +9823,27 @@ namespace StartBack.Infrastructure.Migrations
                     b.HasOne("Entities.Models.Tables.AcademicLevel", "NextLevel")
                         .WithMany()
                         .HasForeignKey("NextLevelId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_academic_level_academic_level_next_level_id");
 
                     b.HasOne("Entities.Models.Tables.AcademicLevel", "Parent")
                         .WithMany("Children")
                         .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_academic_level_academic_level_parent_id");
 
                     b.HasOne("Entities.Models.Tables.AcademicLevel", "PreviousLevel")
                         .WithMany()
                         .HasForeignKey("PreviousLevelId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_academic_level_academic_level_previous_level_id");
 
                     b.HasOne("Entities.Models.Tables.University", "University")
                         .WithMany()
                         .HasForeignKey("UniversityId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_academic_level_university_university_id");
 
                     b.Navigation("NextLevel");
 
@@ -8480,13 +9860,15 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("AcademicLevelCourses")
                         .HasForeignKey("AcademicLevelId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_academic_level_course_academic_level_academic_level_id");
 
                     b.HasOne("Entities.Models.Tables.Course", "Course")
                         .WithMany("AcademicLevelCourses")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_academic_level_course_course_course_id");
 
                     b.Navigation("AcademicLevel");
 
@@ -8499,13 +9881,15 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("AcademicLevelIterations")
                         .HasForeignKey("AcademicLevelId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_academic_level_iteration_academic_level_academic_level_id");
 
                     b.HasOne("Entities.Models.Tables.AcademicYear", "AcademicYear")
                         .WithMany("AcademicLevelIterations")
                         .HasForeignKey("AcademicYearId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_academic_level_iteration_academic_year_academic_year_id");
 
                     b.Navigation("AcademicLevel");
 
@@ -8518,7 +9902,8 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("AcademicYears")
                         .HasForeignKey("UniversityId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_academic_year_university_university_id");
 
                     b.Navigation("University");
                 });
@@ -8528,23 +9913,27 @@ namespace StartBack.Infrastructure.Migrations
                     b.HasOne("Entities.Models.Tables.AssignmentType", "AssignmentType")
                         .WithMany()
                         .HasForeignKey("AssignmentTypeId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_assignments_assignment_type_assignment_type_id");
 
                     b.HasOne("Entities.Models.Tables.CourseSemester", "CourseSection")
                         .WithMany()
                         .HasForeignKey("CourseSectionId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_assignments_course_semester_course_section_id");
 
                     b.HasOne("Entities.Models.Tables.Quarter", "Quarter")
                         .WithMany()
                         .HasForeignKey("QuarterId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_assignments_quarter_quarter_id");
 
                     b.HasOne("Entities.Models.Tables.Semester", "Semester")
                         .WithMany()
                         .HasForeignKey("SemesterId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_assignments_semester_semester_id");
 
                     b.Navigation("AssignmentType");
 
@@ -8561,13 +9950,15 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("AssignmentId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_assignment_grade_assignments_assignment_id");
 
                     b.HasOne("Entities.Models.Tables.PersonUniversity", "PersonUniversity")
                         .WithMany()
                         .HasForeignKey("PersonUniversityId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_assignment_grade_person_university_person_university_id");
 
                     b.Navigation("Assignment");
 
@@ -8580,7 +9971,8 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("CourseSectionId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_assignment_type_course_semester_course_section_id");
 
                     b.Navigation("CourseSection");
                 });
@@ -8591,13 +9983,15 @@ namespace StartBack.Infrastructure.Migrations
                         .WithOne()
                         .HasForeignKey("Entities.Models.Tables.AttendanceCompleted", "CourseSectionMeetingId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_attendance_completed_course_section_meeting_course_section_");
 
                     b.HasOne("Entities.Models.Tables.PersonUniversity", "PersonUniversity")
                         .WithMany()
                         .HasForeignKey("PersonUniversityId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_attendance_completed_person_university_person_university_id");
 
                     b.Navigation("CourseSectionMeeting");
 
@@ -8609,19 +10003,22 @@ namespace StartBack.Infrastructure.Migrations
                     b.HasOne("Entities.Models.Tables.LookupAttendanceCode", "AttendanceCode")
                         .WithMany()
                         .HasForeignKey("AttendanceCodeId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_attendance_period_lookup_attendance_code_attendance_code_id");
 
                     b.HasOne("Entities.Models.Tables.CourseSectionMeeting", "CourseSectionMeeting")
                         .WithMany()
                         .HasForeignKey("CourseSectionMeetingId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_attendance_period_course_section_meeting_course_section_mee");
 
                     b.HasOne("Entities.Models.Tables.StudentCourseEnrollment", "StudentCourseEnrollment")
                         .WithMany("AttendancePeriods")
                         .HasForeignKey("StudentCourseEnrollmentId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_attendance_period_student_course_enrollment_student_course_");
 
                     b.Navigation("AttendanceCode");
 
@@ -8636,7 +10033,8 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("UniversityId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_battalion_university_university_id");
 
                     b.Navigation("University");
                 });
@@ -8647,7 +10045,8 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("UniversityId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_building_university_university_id");
 
                     b.Navigation("University");
                 });
@@ -8658,7 +10057,8 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("Companies")
                         .HasForeignKey("BattalionId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_company_battalion_battalion_id");
 
                     b.Navigation("Battalion");
                 });
@@ -8669,23 +10069,27 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("Courses")
                         .HasForeignKey("CourseCategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_course_course_category_course_category_id");
 
                     b.HasOne("Entities.Models.Tables.CourseType", "CourseType")
                         .WithMany()
                         .HasForeignKey("CourseTypeId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_course_course_type_course_type_id");
 
                     b.HasOne("Entities.Models.Tables.GradeScale", "GradeScale")
                         .WithMany("Courses")
                         .HasForeignKey("GradeScaleId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_course_grade_scale_grade_scale_id");
 
                     b.HasOne("Entities.Models.Tables.University", "University")
                         .WithMany("Courses")
                         .HasForeignKey("UniversityId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_course_university_university_id");
 
                     b.Navigation("CourseCategory");
 
@@ -8702,7 +10106,8 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("CourseCategories")
                         .HasForeignKey("UniversityId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_course_category_university_university_id");
 
                     b.Navigation("University");
                 });
@@ -8713,13 +10118,15 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("CourseDegreeDevisionCourses")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_course_degree_devision_course_course_course_id");
 
                     b.HasOne("Entities.Models.Tables.LookupCourseDegreeDevision", "LookupCourseDegreeDevision")
                         .WithMany("CourseDegreeDevisionCourses")
                         .HasForeignKey("LookupCourseDegreeDevisionId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_course_degree_devision_course_lookup_course_degree_devision");
 
                     b.Navigation("Course");
 
@@ -8732,13 +10139,15 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("CourseInstructors")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_course_instructor_course_course_id");
 
                     b.HasOne("Entities.Models.Tables.PersonUniversity", "PersonUniversity")
                         .WithMany("CourseInstructors")
                         .HasForeignKey("PersonUniversityId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_course_instructor_person_university_person_university_id");
 
                     b.Navigation("Course");
 
@@ -8751,13 +10160,15 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_course_prerequisite_course_course_id");
 
                     b.HasOne("Entities.Models.Tables.Course", "PrerequisiteCourse")
                         .WithMany()
                         .HasForeignKey("PrerequisiteCourseId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_course_prerequisite_course_prerequisite_course_id");
 
                     b.Navigation("Course");
 
@@ -8769,25 +10180,29 @@ namespace StartBack.Infrastructure.Migrations
                     b.HasOne("Entities.Models.Tables.CourseInstructor", "CourseInstructor")
                         .WithMany()
                         .HasForeignKey("CourseInstructorId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_course_section_meeting_course_instructor_course_instructor_");
 
                     b.HasOne("Entities.Models.Tables.CourseSemesterSection", "CourseSemesterSection")
                         .WithMany("CourseSectionMeetings")
                         .HasForeignKey("CourseSemesterSectionId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_course_section_meeting_course_semester_section_course_semes");
 
                     b.HasOne("Entities.Models.Tables.Hall", "Hall")
                         .WithMany("CourseSectionMeetings")
                         .HasForeignKey("HallId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_course_section_meeting_hall_hall_id");
 
                     b.HasOne("Entities.Models.Tables.Period", "Period")
                         .WithMany("CourseSectionMeetings")
                         .HasForeignKey("PeriodId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_course_section_meeting_period_period_id");
 
                     b.Navigation("CourseInstructor");
 
@@ -8804,19 +10219,22 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("CourseSemesters")
                         .HasForeignKey("AcademicLevelIterationId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_course_semesters_academic_level_iteration_academic_level_it");
 
                     b.HasOne("Entities.Models.Tables.Course", "Course")
                         .WithMany("CourseSemesters")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_course_semesters_course_course_id");
 
                     b.HasOne("Entities.Models.Tables.Semester", "Semester")
                         .WithMany("CourseSemesters")
                         .HasForeignKey("SemesterId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_course_semesters_semester_semester_id");
 
                     b.Navigation("AcademicLevelIteration");
 
@@ -8831,13 +10249,15 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("CourseSemesterSections")
                         .HasForeignKey("CourseSemesterId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_course_semester_section_course_semester_course_semester_id");
 
                     b.HasOne("Entities.Models.Tables.Section", "Section")
                         .WithMany("CourseSemesterSections")
                         .HasForeignKey("SectionId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_course_semester_section_section_section_id");
 
                     b.Navigation("CourseSemester");
 
@@ -8850,24 +10270,28 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("ActionTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_discipline_action_lookup_discipline_action_type_action_type");
 
                     b.HasOne("Entities.Models.Tables.DisciplineIncident", "Incident")
                         .WithMany()
                         .HasForeignKey("IncidentId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_discipline_action_discipline_incident_incident_id");
 
                     b.HasOne("Entities.Models.Tables.PersonUniversity", "IssuerPersonUniversity")
                         .WithMany()
                         .HasForeignKey("IssuedByPersonUniversityId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_discipline_action_person_university_issued_by_person_univer");
 
                     b.HasOne("Entities.Models.Tables.PersonUniversity", "PersonUniversity")
                         .WithMany()
                         .HasForeignKey("PersonUniversityId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_discipline_action_person_university_person_university_id");
 
                     b.Navigation("ActionType");
 
@@ -8884,23 +10308,27 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("AcademicYearId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_discipline_incident_academic_year_academic_year_id");
 
                     b.HasOne("Entities.Models.Tables.LookupIncidentType", "IncidentType")
                         .WithMany()
                         .HasForeignKey("IncidentTypeId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_discipline_incident_lookup_incident_type_incident_type_id");
 
                     b.HasOne("Entities.Models.Tables.PersonUniversity", "ReporterPersonUniversity")
                         .WithMany()
                         .HasForeignKey("ReporterPersonUniversityId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_discipline_incident_person_university_reporter_person_unive");
 
                     b.HasOne("Entities.Models.Tables.University", "University")
                         .WithMany()
                         .HasForeignKey("UniversityId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_discipline_incident_university_university_id");
 
                     b.Navigation("AcademicYear");
 
@@ -8917,13 +10345,15 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("IncidentId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_discipline_incident_student_discipline_incident_incident_id");
 
                     b.HasOne("Entities.Models.Tables.PersonUniversity", "PersonUniversity")
                         .WithMany()
                         .HasForeignKey("PersonUniversityId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_discipline_incident_student_person_university_person_univer");
 
                     b.Navigation("Incident");
 
@@ -8936,24 +10366,28 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("FinalGrades")
                         .HasForeignKey("CourseSemesterId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_final_grade_course_semester_course_semester_id");
 
                     b.HasOne("Entities.Models.Tables.GradeScaleItem", "GradeScaleItem")
                         .WithMany("FinalGrades")
                         .HasForeignKey("GradeScaleItemId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_final_grade_grade_scale_item_grade_scale_item_id");
 
                     b.HasOne("Entities.Models.Tables.Semester", "Semester")
                         .WithMany("FinalGrades")
                         .HasForeignKey("SemesterId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_final_grade_semester_semester_id");
 
                     b.HasOne("Entities.Models.Tables.StudentCourseEnrollment", "StudentCourseEnrollment")
                         .WithMany("FinalGrades")
                         .HasForeignKey("StudentCourseEnrollmentId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_final_grade_student_course_enrollment_student_course_enroll");
 
                     b.Navigation("CourseSemester");
 
@@ -8970,7 +10404,8 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("Floors")
                         .HasForeignKey("BuildingId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_floor_building_building_id");
 
                     b.Navigation("Building");
                 });
@@ -8981,13 +10416,15 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("GradeScales")
                         .HasForeignKey("AcademicYearId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_grade_scale_academic_year_academic_year_id");
 
                     b.HasOne("Entities.Models.Tables.University", "University")
                         .WithMany()
                         .HasForeignKey("UniversityId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_grade_scale_university_university_id");
 
                     b.Navigation("AcademicYear");
 
@@ -9000,7 +10437,8 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("GradeScaleItems")
                         .HasForeignKey("GradeScaleId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_grade_scale_item_grade_scale_grade_scale_id");
 
                     b.Navigation("GradeScale");
                 });
@@ -9011,7 +10449,8 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("UniversityId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_hall_university_university_id");
 
                     b.Navigation("University");
                 });
@@ -9021,7 +10460,8 @@ namespace StartBack.Infrastructure.Migrations
                     b.HasOne("Entities.Models.Tables.University", "University")
                         .WithMany("Jobs")
                         .HasForeignKey("UniversityId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_job_university_university_id");
 
                     b.Navigation("University");
                 });
@@ -9032,7 +10472,8 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("GovernateId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_lookup_district_lookup_governate_governate_id");
 
                     b.Navigation("Governate");
                 });
@@ -9094,7 +10535,8 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("Periods")
                         .HasForeignKey("UniversityId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_period_university_university_id");
 
                     b.Navigation("University");
                 });
@@ -9104,42 +10546,50 @@ namespace StartBack.Infrastructure.Migrations
                     b.HasOne("Entities.Models.Tables.LookupBatch", "Batch")
                         .WithMany()
                         .HasForeignKey("BatchId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_person_lookup_batch_batch_id");
 
                     b.HasOne("Entities.Models.Tables.BloodType", "BloodType")
                         .WithMany()
                         .HasForeignKey("BloodTypeId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_person_blood_type_blood_type_id");
 
                     b.HasOne("Entities.Models.Tables.LookupDistrict", "District")
                         .WithMany()
                         .HasForeignKey("DistrictId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_person_lookup_district_district_id");
 
                     b.HasOne("Entities.Models.Tables.LookupGovernate", "Governate")
                         .WithMany()
                         .HasForeignKey("GovernateId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_person_lookup_governate_governate_id");
 
                     b.HasOne("Entities.Models.Tables.LookupMilitaryRank", "MilitaryRank")
                         .WithMany()
                         .HasForeignKey("MilitaryRankId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_person_lookup_military_rank_military_rank_id");
 
                     b.HasOne("Entities.Models.Tables.LookupNationality", "Nationality")
                         .WithMany()
                         .HasForeignKey("NationalityId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_person_lookup_nationality_nationality_id");
 
                     b.HasOne("Entities.Models.Tables.LookupReligion", "Religion")
                         .WithMany()
                         .HasForeignKey("ReligionId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_person_lookup_religion_religion_id");
 
                     b.HasOne("Entities.Models.Tables.LookupWeapon", "Weapon")
                         .WithMany()
                         .HasForeignKey("WeaponId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_person_lookup_weapon_weapon_id");
 
                     b.Navigation("Batch");
 
@@ -9185,13 +10635,15 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("PersonUniversityJobs")
                         .HasForeignKey("JobId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_person_university_job_job_job_id");
 
                     b.HasOne("Entities.Models.Tables.PersonUniversity", "PersonUniversity")
                         .WithMany("PersonUniversityJobs")
                         .HasForeignKey("PersonUniversityId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_person_university_job_person_university_person_university_id");
 
                     b.Navigation("Job");
 
@@ -9204,19 +10656,22 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("CollegeId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_person_university_qualification_lookup_college_college_id");
 
                     b.HasOne("Entities.Models.Tables.PersonUniversity", "PersonUniversity")
                         .WithMany("PersonUniversityQualifications")
                         .HasForeignKey("PersonUniversityId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_person_university_qualification_person_university_person_un");
 
                     b.HasOne("Entities.Models.Tables.LookupQualification", "Qualification")
                         .WithMany()
                         .HasForeignKey("QualificationId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_person_university_qualification_lookup_qualification_qualif");
 
                     b.Navigation("College");
 
@@ -9231,19 +10686,22 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("PersonUniversitySections")
                         .HasForeignKey("AcademicYearId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_person_university_section_academic_year_academic_year_id");
 
                     b.HasOne("Entities.Models.Tables.PersonUniversity", "PersonUniversity")
                         .WithMany("PersonUniversitySections")
                         .HasForeignKey("PersonUniversityId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_person_university_section_person_university_person_universi");
 
                     b.HasOne("Entities.Models.Tables.Section", "Section")
                         .WithMany("PersonUniversitySections")
                         .HasForeignKey("SectionId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_person_university_section_section_section_id");
 
                     b.Navigation("AcademicYear");
 
@@ -9258,7 +10716,8 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("Platoons")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_platoon_company_company_id");
 
                     b.Navigation("Company");
                 });
@@ -9269,7 +10728,8 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("QuarterId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_progress_period_quarter_quarter_id");
 
                     b.Navigation("Quarter");
                 });
@@ -9280,7 +10740,8 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("SemesterId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_quarter_semester_semester_id");
 
                     b.Navigation("Semester");
                 });
@@ -9290,7 +10751,8 @@ namespace StartBack.Infrastructure.Migrations
                     b.HasOne("Entities.Models.Tables.Floor", "Floor")
                         .WithMany("Rooms")
                         .HasForeignKey("FloorId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_room_floor_floor_id");
 
                     b.Navigation("Floor");
                 });
@@ -9301,25 +10763,29 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("Sections")
                         .HasForeignKey("AcademicLevelId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_section_academic_level_academic_level_id");
 
                     b.HasOne("Entities.Models.Tables.AcademicLevelIteration", "AcademicLevelIteration")
                         .WithMany("Sections")
                         .HasForeignKey("AcademicLevelIterationId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_section_academic_level_iteration_academic_level_iteration_id");
 
                     b.HasOne("Entities.Models.Tables.AcademicYear", "AcademicYear")
                         .WithMany("Sections")
                         .HasForeignKey("AcademicYearId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_section_academic_year_academic_year_id");
 
                     b.HasOne("Entities.Models.Tables.University", "University")
                         .WithMany("Sections")
                         .HasForeignKey("UniversityId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_section_university_university_id");
 
                     b.Navigation("AcademicLevel");
 
@@ -9336,19 +10802,22 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("Semesters")
                         .HasForeignKey("AcademicLevelId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_semester_academic_level_academic_level_id");
 
                     b.HasOne("Entities.Models.Tables.AcademicLevelIteration", "AcademicLevelIteration")
                         .WithMany("Semesters")
                         .HasForeignKey("AcademicLevelIterationId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_semester_academic_level_iteration_academic_level_iteration_");
 
                     b.HasOne("Entities.Models.Tables.AcademicYear", "AcademicYear")
                         .WithMany("Semesters")
                         .HasForeignKey("AcademicYearId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_semester_academic_year_academic_year_id");
 
                     b.Navigation("AcademicLevel");
 
@@ -9362,12 +10831,14 @@ namespace StartBack.Infrastructure.Migrations
                     b.HasOne("Entities.Models.Tables.LookupNationality", "Nationality")
                         .WithMany()
                         .HasForeignKey("NationalityId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_staff_lookup_nationality_nationality_id");
 
                     b.HasOne("Entities.Models.Tables.LookupStaffCategory", "StaffCategory")
                         .WithMany()
                         .HasForeignKey("StaffCategoryId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_staff_lookup_staff_category_staff_category_id");
 
                     b.Navigation("Nationality");
 
@@ -9380,19 +10851,22 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("AcademicYearId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_staff_university_assignment_academic_year_academic_year_id");
 
                     b.HasOne("Entities.Models.Tables.PersonUniversity", "PersonUniversity")
                         .WithMany()
                         .HasForeignKey("PersonUniversityId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_staff_university_assignment_person_university_person_univer");
 
                     b.HasOne("Entities.Models.Tables.University", "University")
                         .WithMany()
                         .HasForeignKey("UniversityId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_staff_university_assignment_university_university_id");
 
                     b.Navigation("AcademicYear");
 
@@ -9401,50 +10875,21 @@ namespace StartBack.Infrastructure.Migrations
                     b.Navigation("University");
                 });
 
-            modelBuilder.Entity("Entities.Models.Tables.Student", b =>
-                {
-                    b.HasOne("Entities.Models.Tables.University", "CurrentUniversity")
-                        .WithMany()
-                        .HasForeignKey("CurrentUniversityId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("Entities.Models.Tables.LookupEthnicity", "Ethnicity")
-                        .WithMany()
-                        .HasForeignKey("EthnicityId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("Entities.Models.Tables.LookupLanguage", "Language")
-                        .WithMany()
-                        .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("Entities.Models.Tables.LookupNationality", "Nationality")
-                        .WithMany()
-                        .HasForeignKey("NationalityId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("CurrentUniversity");
-
-                    b.Navigation("Ethnicity");
-
-                    b.Navigation("Language");
-
-                    b.Navigation("Nationality");
-                });
-
             modelBuilder.Entity("Entities.Models.Tables.StudentCourseEnrollment", b =>
                 {
                     b.HasOne("Entities.Models.Tables.CourseSemesterSection", "CourseSemesterSection")
                         .WithMany("StudentCourseEnrollments")
                         .HasForeignKey("CourseSemesterSectionId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_student_course_enrollment_course_semester_section_course_se");
 
                     b.HasOne("Entities.Models.Tables.PersonUniversity", "PersonUniversity")
                         .WithMany("StudentCourseEnrollments")
                         .HasForeignKey("PersonUniversityId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_student_course_enrollment_person_university_person_universi");
 
                     b.Navigation("CourseSemesterSection");
 
@@ -9457,59 +10902,70 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("StudentEnrollments")
                         .HasForeignKey("AcademicLevelId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_student_enrollment_academic_level_academic_level_id");
 
                     b.HasOne("Entities.Models.Tables.AcademicLevelIteration", "AcademicLevelIteration")
                         .WithMany()
                         .HasForeignKey("AcademicLevelIterationId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_student_enrollment_academic_level_iteration_academic_level_");
 
                     b.HasOne("Entities.Models.Tables.AcademicYear", "AcademicYear")
                         .WithMany()
                         .HasForeignKey("AcademicYearId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_student_enrollment_academic_year_academic_year_id");
 
                     b.HasOne("Entities.Models.Tables.Battalion", "Battalion")
                         .WithMany("StudentEnrollments")
                         .HasForeignKey("BattalionId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_student_enrollment_battalion_battalion_id");
 
                     b.HasOne("Entities.Models.Tables.Building", "Building")
                         .WithMany("StudentEnrollments")
                         .HasForeignKey("BuildingId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_student_enrollment_building_building_id");
 
                     b.HasOne("Entities.Models.Tables.Company", "Company")
                         .WithMany("StudentEnrollments")
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_student_enrollment_company_company_id");
 
                     b.HasOne("Entities.Models.Tables.Floor", "Floor")
                         .WithMany("StudentEnrollments")
                         .HasForeignKey("FloorId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_student_enrollment_floor_floor_id");
 
                     b.HasOne("Entities.Models.Tables.PersonUniversity", "PersonUniversity")
                         .WithMany("StudentEnrollments")
                         .HasForeignKey("PersonUniversityId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_student_enrollment_person_university_person_university_id");
 
                     b.HasOne("Entities.Models.Tables.Platoon", "Platoon")
                         .WithMany("StudentEnrollments")
                         .HasForeignKey("PlatoonId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_student_enrollment_platoon_platoon_id");
 
                     b.HasOne("Entities.Models.Tables.Room", "Room")
                         .WithMany("StudentEnrollments")
                         .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_student_enrollment_room_room_id");
 
                     b.HasOne("Entities.Models.Tables.Section", "Section")
                         .WithMany()
                         .HasForeignKey("SectionId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_student_enrollment_section_section_id");
 
                     b.Navigation("AcademicLevel");
 
@@ -9622,24 +11078,28 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("AcademicYearId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_student_gpa_academic_year_academic_year_id");
 
                     b.HasOne("Entities.Models.Tables.PersonUniversity", "PersonUniversity")
                         .WithMany()
                         .HasForeignKey("PersonUniversityId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_student_gpa_person_university_person_university_id");
 
                     b.HasOne("Entities.Models.Tables.Semester", "Semester")
                         .WithMany()
                         .HasForeignKey("SemesterId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_student_gpa_semester_semester_id");
 
                     b.HasOne("Entities.Models.Tables.University", "University")
                         .WithMany()
                         .HasForeignKey("UniversityId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_student_gpa_university_university_id");
 
                     b.Navigation("AcademicYear");
 
@@ -9656,19 +11116,22 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("GuardianId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_student_guardian_guardian_guardian_id");
 
                     b.HasOne("Entities.Models.Tables.PersonUniversity", "PersonUniversity")
                         .WithMany()
                         .HasForeignKey("PersonUniversityId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_student_guardian_person_university_person_university_id");
 
                     b.HasOne("Entities.Models.Tables.LookupRelationshipType", "RelationshipType")
                         .WithMany()
                         .HasForeignKey("RelationshipTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_student_guardian_lookup_relationship_type_relationship_type");
 
                     b.Navigation("Guardian");
 
@@ -9683,18 +11146,21 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("AcademicYearId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_subject_academic_year_academic_year_id");
 
                     b.HasOne("Entities.Models.Tables.LookupSubjectType", "SubjectType")
                         .WithMany()
                         .HasForeignKey("SubjectTypeId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_subject_lookup_subject_type_subject_type_id");
 
                     b.HasOne("Entities.Models.Tables.University", "University")
                         .WithMany()
                         .HasForeignKey("UniversityId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_subject_university_university_id");
 
                     b.Navigation("AcademicYear");
 
@@ -9709,13 +11175,15 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("PersonUniversityId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_transcript_person_university_person_university_id");
 
                     b.HasOne("Entities.Models.Tables.University", "University")
                         .WithMany()
                         .HasForeignKey("UniversityId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_transcript_university_university_id");
 
                     b.Navigation("PersonUniversity");
 
@@ -9726,7 +11194,8 @@ namespace StartBack.Infrastructure.Migrations
                 {
                     b.HasOne("Entities.Models.Tables.University", "Parent")
                         .WithMany("Childern")
-                        .HasForeignKey("ParentId");
+                        .HasForeignKey("ParentId")
+                        .HasConstraintName("fk_university_university_parent_id");
 
                     b.Navigation("Parent");
                 });
@@ -9737,13 +11206,15 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("MenuItemId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_menu_item_permission_menu_items_menu_item_id");
 
                     b.HasOne("StartBack.Domain.Entities.Permission", null)
                         .WithMany()
                         .HasForeignKey("RequiredPermissionsId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_menu_item_permission_permissions_required_permissions_id");
                 });
 
             modelBuilder.Entity("PermissionRole", b =>
@@ -9752,13 +11223,15 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("PermissionsId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_permission_role_permissions_permissions_id");
 
                     b.HasOne("StartBack.Domain.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_permission_role_roles_role_id");
                 });
 
             modelBuilder.Entity("RoleUser", b =>
@@ -9767,13 +11240,15 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_role_user_roles_roles_id");
 
                     b.HasOne("StartBack.Domain.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_role_user_users_user_id");
                 });
 
             modelBuilder.Entity("StartBack.Domain.Entities.MenuItem", b =>
@@ -9781,12 +11256,14 @@ namespace StartBack.Infrastructure.Migrations
                     b.HasOne("StartBack.Domain.Entities.Icon", "Icon")
                         .WithMany()
                         .HasForeignKey("IconId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_menu_items_icons_icon_id");
 
                     b.HasOne("StartBack.Domain.Entities.MenuItem", null)
                         .WithMany()
                         .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_menu_items_menu_items_parent_id");
 
                     b.Navigation("Icon");
                 });
@@ -9797,7 +11274,8 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("Columns")
                         .HasForeignKey("ReportId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_report_columns_reports_report_id");
 
                     b.Navigation("Report");
                 });
@@ -9808,7 +11286,8 @@ namespace StartBack.Infrastructure.Migrations
                         .WithMany("Parameters")
                         .HasForeignKey("ReportId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_report_parameters_reports_report_id");
 
                     b.Navigation("Report");
                 });

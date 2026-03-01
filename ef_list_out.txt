@@ -1,0 +1,17 @@
+﻿Build started...
+Build succeeded.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[10400]
+      Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+warn: Microsoft.EntityFrameworkCore.Model.Validation[20601]
+      The 'PeriodType' property 'PeriodType' on entity type 'Period' is configured with a database-generated default, but has no configured sentinel value. The database-generated default will always be used for inserts when the property has the value '0', since this is the CLR default for the 'PeriodType' type. Consider using a nullable type, using a nullable backing field, or setting the sentinel value for the property to ensure the database default is used when, and only when, appropriate. See https://aka.ms/efcore-docs-default-values for more information.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (8ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT migration_id, product_version
+      FROM "__EFMigrationsHistory"
+      ORDER BY migration_id;
+20260201115446_initpostgres
+20260201124747_addingModelsForLMS
+20260203063221_lmsEnitiesUpdate
+20260204083424_adjustreportforcrosstabedcolumns
+20260208115402_newEntities
+20260222084829_SystemUpdate

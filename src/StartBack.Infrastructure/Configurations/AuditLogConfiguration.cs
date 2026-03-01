@@ -19,7 +19,7 @@ public  class AuditLogConfiguration : BaseConfiguration<AuditLog>
 
         entity.Property(e => e.EmpSerial).HasMaxLength(120);
 
-        entity.Property(e => e.ModuleNo).HasPrecision(5);
+        entity.Property(e => e.ModuleNo).HasPrecision(5, 0);
 
         entity.Property(e => e.TableId).HasMaxLength(200);
 

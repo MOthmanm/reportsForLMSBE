@@ -1,4 +1,5 @@
 using StartBack.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore.Migrations;
 using StartBack.Infrastructure.Persistence.Repositories;
 using StartBack.Infrastructure.Persistence.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,10 @@ public static class PersistenceExtensions
 
         // Register DbContext
         services.AddDbContext<AemzDbContext>(options =>
-            options.UseNpgsql(conn).EnableSensitiveDataLogging());
+            options.UseNpgsql(conn)
+                   .UseSnakeCaseNamingConvention()
+                   .ReplaceService<IHistoryRepository, SnakeCaseHistoryRepository>()
+                   .EnableSensitiveDataLogging());
 
         services.AddScoped<DbContext, AemzDbContext>();
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));

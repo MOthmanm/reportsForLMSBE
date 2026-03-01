@@ -1,0 +1,13 @@
+Schema for ie_export_jobs:
+- Id (uuid)
+- ReportId (uuid)
+- Format (character varying)
+- Status (character varying)
+- FilePath (character varying)
+- FileSize (bigint)
+- RequestedBy (character varying)
+- TenantId (character varying)
+- ErrorMessage (text)
+- CreatedAt (timestamp without time zone)
+- CompletedAt (timestamp without time zone)
+- QueryDefinition (jsonb)

@@ -1,0 +1,21 @@
+﻿  Determining projects to restore...
+F:\ReportsForLMS\Reports abo bakr source code\START--FRONT\reportsForLMSBE\src\StartBack.Api\StartBack.Api.csproj : warning NU1603: InsightEngine.Infrastructure 1.0.21 depends on SqlKata (>= 3.0.0) but SqlKata 3.0.0 was not found. SqlKata 3.2.3 was resolved instead.
+F:\ReportsForLMS\Reports abo bakr source code\START--FRONT\reportsForLMSBE\src\StartBack.Api\StartBack.Api.csproj : warning NU1603: InsightEngine.Infrastructure 1.0.21 depends on SqlKata.Execution (>= 3.0.0) but SqlKata.Execution 3.0.0 was not found. SqlKata.Execution 3.2.3 was resolved instead.
+  All projects are up-to-date for restore.
+F:\ReportsForLMS\Reports abo bakr source code\START--FRONT\reportsForLMSBE\src\StartBack.Api\StartBack.Api.csproj : warning NU1603: InsightEngine.Infrastructure 1.0.21 depends on SqlKata (>= 3.0.0) but SqlKata 3.0.0 was not found. SqlKata 3.2.3 was resolved instead.
+F:\ReportsForLMS\Reports abo bakr source code\START--FRONT\reportsForLMSBE\src\StartBack.Api\StartBack.Api.csproj : warning NU1603: InsightEngine.Infrastructure 1.0.21 depends on SqlKata.Execution (>= 3.0.0) but SqlKata.Execution 3.0.0 was not found. SqlKata.Execution 3.2.3 was resolved instead.
+  StartBack.Domain -> F:\ReportsForLMS\Reports abo bakr source code\START--FRONT\reportsForLMSBE\src\StartBack.Domain\bin\Debug\net9.0\StartBack.Domain.dll
+  StartBack.Application -> F:\ReportsForLMS\Reports abo bakr source code\START--FRONT\reportsForLMSBE\src\StartBack.Application\bin\Debug\net9.0\StartBack.Application.dll
+  StartBack.Infrastructure -> F:\ReportsForLMS\Reports abo bakr source code\START--FRONT\reportsForLMSBE\src\StartBack.Infrastructure\bin\Debug\net9.0\StartBack.Infrastructure.dll
+  StartBack.Api -> F:\ReportsForLMS\Reports abo bakr source code\START--FRONT\reportsForLMSBE\src\StartBack.Api\bin\Debug\net9.0\StartBack.Api.dll
+
+Build succeeded.
+
+F:\ReportsForLMS\Reports abo bakr source code\START--FRONT\reportsForLMSBE\src\StartBack.Api\StartBack.Api.csproj : warning NU1603: InsightEngine.Infrastructure 1.0.21 depends on SqlKata (>= 3.0.0) but SqlKata 3.0.0 was not found. SqlKata 3.2.3 was resolved instead.
+F:\ReportsForLMS\Reports abo bakr source code\START--FRONT\reportsForLMSBE\src\StartBack.Api\StartBack.Api.csproj : warning NU1603: InsightEngine.Infrastructure 1.0.21 depends on SqlKata.Execution (>= 3.0.0) but SqlKata.Execution 3.0.0 was not found. SqlKata.Execution 3.2.3 was resolved instead.
+F:\ReportsForLMS\Reports abo bakr source code\START--FRONT\reportsForLMSBE\src\StartBack.Api\StartBack.Api.csproj : warning NU1603: InsightEngine.Infrastructure 1.0.21 depends on SqlKata (>= 3.0.0) but SqlKata 3.0.0 was not found. SqlKata 3.2.3 was resolved instead.
+F:\ReportsForLMS\Reports abo bakr source code\START--FRONT\reportsForLMSBE\src\StartBack.Api\StartBack.Api.csproj : warning NU1603: InsightEngine.Infrastructure 1.0.21 depends on SqlKata.Execution (>= 3.0.0) but SqlKata.Execution 3.0.0 was not found. SqlKata.Execution 3.2.3 was resolved instead.
+    4 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.85
