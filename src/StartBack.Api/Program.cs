@@ -56,6 +56,14 @@ builder.Services.AddInsightEngine(options =>
     options.DatabaseProvider = DatabaseProviderType.PostgreSQL;
     options.ConnectionString = builder.Configuration.GetConnectionString("Default")!;
     options.CacheProvider = CacheProviderType.InMemory;
+
+    // PDF Header — Organization name shown at the top of exported PDFs
+    options.PdfHeaderLines = new List<string>
+    {
+        "معهد ضباط صف المعلمين",
+        "شئون الطلبة"
+    };
+
     // RLS Configuration for ReportsForLMS
     options.RlsMapping = new RlsColumnMapping
     {
