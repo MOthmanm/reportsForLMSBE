@@ -3,6 +3,7 @@ using InsightEngine.Api;
 using InsightEngine.Infrastructure;
 using InsightEngine.Infrastructure.Configuration;
 using StartBack.Infrastructure.Persistence;
+using InsightEngine.Core.Domain;
 using StartBack.Infrastructure.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -53,7 +54,7 @@ builder.Services.AddApplicationServices();
 // InsightEngine Services
 builder.Services.AddInsightEngine(options =>
 {
-    options.DatabaseProvider = DatabaseProviderType.PostgreSQL;
+    options.DatabaseProvider = InsightEngine.Core.Domain.DatabaseProviderType.PostgreSQL;
     options.ConnectionString = builder.Configuration.GetConnectionString("Default")!;
     options.CacheProvider = CacheProviderType.InMemory;
 
@@ -71,6 +72,13 @@ builder.Services.AddInsightEngine(options =>
          UnrestrictedEntities = new List<string> { "users", "roles" },
          TenantClaim = "tenant_id"
     };
+
+    // Add Oracle Data Source
+    options.DataSources.Add("OracleSource", new DataSourceDefinition
+    {
+        ProviderType = InsightEngine.Core.Domain.DatabaseProviderType.Oracle,
+        ConnectionString = builder.Configuration.GetConnectionString("OracleConnection")!
+    });
 });
 
 builder.Services.AddApiVersioning(options =>
