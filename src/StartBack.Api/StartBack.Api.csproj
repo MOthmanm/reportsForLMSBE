@@ -20,9 +20,9 @@
     <ProjectReference Include="..\StartBack.Application\StartBack.Application.csproj" />
     <ProjectReference Include="..\StartBack.Infrastructure\StartBack.Infrastructure.csproj" />
     <!-- Note: Make sure the Version matches the packed InsightEngine nupkgs -->
-    <PackageReference Include="InsightEngine.Core" Version="1.0.51" />
-    <PackageReference Include="InsightEngine.Infrastructure" Version="1.0.51" />
-    <PackageReference Include="InsightEngine.Api" Version="1.0.51" />
+    <PackageReference Include="InsightEngine.Core" Version="1.0.54" />
+    <PackageReference Include="InsightEngine.Infrastructure" Version="1.0.54" />
+    <PackageReference Include="InsightEngine.Api" Version="1.0.54" />
   </ItemGroup>
 
 </Project>
